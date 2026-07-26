@@ -12,6 +12,7 @@ import Footer from './components/Footer';
 import DciRegistry from './components/DciRegistry';
 import ClaimSimulator from './components/ClaimSimulator';
 import AuditDashboard from './components/AuditDashboard';
+import SettingsView from './components/SettingsView';
 
 export default function App() {
   const [activeView, setActiveView] = useState('home');
@@ -159,6 +160,8 @@ export default function App() {
         )}
 
         {(activeView === 'audit' || activeView === 'tech') && <AuditDashboard />}
+
+        {activeView === 'settings' && <SettingsView />}
       </main>
 
       {/* Footer element */}
