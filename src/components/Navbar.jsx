@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { User, LogIn, LogOut, Settings, ShieldCheck, CheckCircle2, Menu, X, Database, Camera, FileText, Users, Clock, Search, Save, Phone, Mail } from 'lucide-react';
+import { User, LogIn, LogOut, Settings, ShieldCheck, CheckCircle2, Menu, X, Database, Camera, FileText, Users, Clock, Search, Save, Phone, Mail, Sun, Moon } from 'lucide-react';
 
-export default function Navbar({ activeView, setActiveView }) {
+export default function Navbar({ activeView, setActiveView, claimsCount, onOpenClaims, darkMode, setDarkMode }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -188,18 +188,18 @@ export default function Navbar({ activeView, setActiveView }) {
                 }}
               >
                 <div style={{
-                  width: '42px',
-                  height: '42px',
+                  width: '34px',
+                  height: '34px',
                   borderRadius: '50%',
                   backgroundColor: getAvatarBg(currentUser.name),
                   color: '#FFFFFF',
-                  fontSize: '15px',
+                  fontSize: '13px',
                   fontWeight: '700',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   border: '2px solid white',
-                  boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                   transition: 'transform 0.2s ease',
                   fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                 }}>
@@ -207,39 +207,58 @@ export default function Navbar({ activeView, setActiveView }) {
                 </div>
               </button>
 
+              {/* Invisible Click-Outside Capture Overlay to close dropdown when clicking anywhere else */}
+              {dropdownOpen && (
+                <div 
+                  onClick={() => setDropdownOpen(false)}
+                  style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100vw',
+                    height: '100vh',
+                    zIndex: 998,
+                    cursor: 'default',
+                    backgroundColor: 'transparent'
+                  }}
+                />
+              )}
+
               {/* User Dropdown Menu Card */}
               {dropdownOpen && (
                 <div 
+                  onClick={(e) => e.stopPropagation()}
                   style={{
                     position: 'absolute',
                     top: '54px',
                     right: 0,
                     width: '320px',
-                    backgroundColor: '#FFFFFF',
+                    backgroundColor: darkMode ? '#162234' : '#FFFFFF',
                     borderRadius: '24px',
                     padding: '16px',
-                    border: '1px solid rgba(0,0,0,0.08)',
-                    boxShadow: '0 20px 45px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0,0,0,0.04)',
+                    border: darkMode ? '1px solid rgba(255, 255, 255, 0.16)' : '1px solid rgba(0,0,0,0.08)',
+                    boxShadow: darkMode ? '0 25px 60px rgba(0, 0, 0, 0.65)' : '0 20px 45px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0,0,0,0.04)',
                     zIndex: 1000,
                     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                    animation: 'fadeIn 0.2s ease'
+                    animation: 'fadeIn 0.2s ease',
+                    color: darkMode ? '#FFFFFF' : '#000000'
                   }}
                 >
                   {/* Inner Top Profile Card Header */}
                   <div style={{
-                    border: '1px solid #EFEFEF',
+                    border: darkMode ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid #EFEFEF',
                     borderRadius: '18px',
                     padding: '16px 18px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    backgroundColor: '#FFFFFF'
+                    backgroundColor: darkMode ? '#1D2C42' : '#FFFFFF'
                   }}>
                     <div style={{ overflow: 'hidden', paddingRight: '8px' }}>
-                      <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#000000', margin: 0, letterSpacing: '-0.02em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <h3 style={{ fontSize: '18px', fontWeight: '700', color: darkMode ? '#FFFFFF' : '#000000', margin: 0, letterSpacing: '-0.02em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {currentUser.name}
                       </h3>
-                      <p style={{ fontSize: '13px', color: '#71717A', margin: '2px 0 0 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <p style={{ fontSize: '13px', color: darkMode ? 'rgba(255,255,255,0.65)' : '#71717A', margin: '2px 0 0 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {currentUser.email}
                       </p>
                     </div>
@@ -265,6 +284,49 @@ export default function Navbar({ activeView, setActiveView }) {
                   {/* Separate Options Menu List */}
                   <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     
+                    {/* Option 0: Dark Mode Theme Toggle */}
+                    <div 
+                      onClick={() => setDarkMode && setDarkMode(prev => !prev)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '12px 16px',
+                        borderRadius: '14px',
+                        backgroundColor: darkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)',
+                        cursor: 'pointer',
+                        transition: 'background-color 0.15s ease'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                        {darkMode ? <Sun size={20} color="#E9E778" strokeWidth={2} /> : <Moon size={20} color="#241F21" strokeWidth={2} />}
+                        <span style={{ fontSize: '15px', fontWeight: '600', color: darkMode ? '#FFFFFF' : '#000000' }}>
+                          {darkMode ? 'Light Theme' : 'Dark Theme'}
+                        </span>
+                      </div>
+
+                      {/* Animated Toggle Switch */}
+                      <div style={{
+                        width: '42px',
+                        height: '24px',
+                        borderRadius: '12px',
+                        backgroundColor: darkMode ? '#BACFA3' : '#D4D4D8',
+                        padding: '2px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: darkMode ? 'flex-end' : 'flex-start',
+                        transition: 'all 0.25s ease'
+                      }}>
+                        <div style={{
+                          width: '20px',
+                          height: '20px',
+                          borderRadius: '50%',
+                          backgroundColor: darkMode ? '#042D2B' : '#FFFFFF',
+                          boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                        }} />
+                      </div>
+                    </div>
+                    
                     {/* Separate Option 1: Settings */}
                     <div 
                       onClick={() => handleNavClick('settings')}
@@ -274,13 +336,13 @@ export default function Navbar({ activeView, setActiveView }) {
                         gap: '14px',
                         padding: '12px 16px',
                         borderRadius: '14px',
-                        backgroundColor: activeView === 'settings' ? '#F4F4F5' : 'transparent',
+                        backgroundColor: activeView === 'settings' ? (darkMode ? 'rgba(255,255,255,0.12)' : '#F4F4F5') : 'transparent',
                         cursor: 'pointer',
                         transition: 'background-color 0.15s ease'
                       }}
                     >
-                      <Settings size={20} color="#000000" strokeWidth={2} />
-                      <span style={{ fontSize: '15px', fontWeight: '600', color: '#000000' }}>Settings</span>
+                      <Settings size={20} color={darkMode ? '#FFFFFF' : '#000000'} strokeWidth={2} />
+                      <span style={{ fontSize: '15px', fontWeight: '600', color: darkMode ? '#FFFFFF' : '#000000' }}>Settings</span>
                     </div>
 
                     {/* Separate Option 2: Switch Account */}
@@ -298,10 +360,10 @@ export default function Navbar({ activeView, setActiveView }) {
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                        <Users size={20} color="#000000" strokeWidth={2} />
-                        <span style={{ fontSize: '15px', fontWeight: '600', color: '#000000' }}>Switch Account</span>
+                        <Users size={20} color={darkMode ? '#FFFFFF' : '#000000'} strokeWidth={2} />
+                        <span style={{ fontSize: '15px', fontWeight: '600', color: darkMode ? '#FFFFFF' : '#000000' }}>Switch Account</span>
                       </div>
-                      <span style={{ fontSize: '11px', fontWeight: 'bold', backgroundColor: '#F4F4F5', padding: '2px 8px', borderRadius: '10px', color: '#71717A' }}>
+                      <span style={{ fontSize: '11px', fontWeight: 'bold', backgroundColor: darkMode ? 'rgba(255,255,255,0.12)' : '#F4F4F5', padding: '2px 8px', borderRadius: '10px', color: darkMode ? '#BACFA3' : '#71717A' }}>
                         6 Accounts
                       </span>
                     </div>
@@ -321,8 +383,8 @@ export default function Navbar({ activeView, setActiveView }) {
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                        <Clock size={20} color="#000000" strokeWidth={2} />
-                        <span style={{ fontSize: '15px', fontWeight: '600', color: '#000000' }}>Pending Tasks</span>
+                        <Clock size={20} color={darkMode ? '#FFFFFF' : '#000000'} strokeWidth={2} />
+                        <span style={{ fontSize: '15px', fontWeight: '600', color: darkMode ? '#FFFFFF' : '#000000' }}>Pending Tasks</span>
                       </div>
                       <span style={{ fontSize: '12px', fontWeight: '700', backgroundColor: 'rgba(247,108,70,0.15)', color: 'var(--color-urbanCoral)', padding: '2px 10px', borderRadius: '12px' }}>
                         3 Pending
@@ -344,10 +406,10 @@ export default function Navbar({ activeView, setActiveView }) {
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                        <Search size={20} color="#000000" strokeWidth={2} />
-                        <span style={{ fontSize: '15px', fontWeight: '600', color: '#000000' }}>Total Searches</span>
+                        <Search size={20} color={darkMode ? '#FFFFFF' : '#000000'} strokeWidth={2} />
+                        <span style={{ fontSize: '15px', fontWeight: '600', color: darkMode ? '#FFFFFF' : '#000000' }}>Total Searches</span>
                       </div>
-                      <span style={{ fontSize: '12px', fontWeight: '700', backgroundColor: '#F4F4F5', color: '#71717A', padding: '2px 10px', borderRadius: '12px' }}>
+                      <span style={{ fontSize: '12px', fontWeight: '700', backgroundColor: darkMode ? 'rgba(255,255,255,0.12)' : '#F4F4F5', color: darkMode ? 'rgba(255,255,255,0.7)' : '#71717A', padding: '2px 10px', borderRadius: '12px' }}>
                         142 Scans
                       </span>
                     </div>
@@ -355,7 +417,7 @@ export default function Navbar({ activeView, setActiveView }) {
                   </div>
 
                   {/* Divider */}
-                  <div style={{ height: '1px', backgroundColor: '#EFEFEF', margin: '10px 0' }} />
+                  <div style={{ height: '1px', backgroundColor: darkMode ? 'rgba(255, 255, 255, 0.12)' : '#EFEFEF', margin: '10px 0' }} />
 
                   {/* Option 5: Sign out */}
                   <div 
@@ -370,8 +432,8 @@ export default function Navbar({ activeView, setActiveView }) {
                       transition: 'background-color 0.15s ease'
                     }}
                   >
-                    <LogOut size={20} color="#000000" strokeWidth={2} />
-                    <span style={{ fontSize: '15px', fontWeight: '600', color: '#000000' }}>Sign out</span>
+                    <LogOut size={20} color={darkMode ? '#FFFFFF' : '#000000'} strokeWidth={2} />
+                    <span style={{ fontSize: '15px', fontWeight: '600', color: darkMode ? '#FFFFFF' : '#000000' }}>Sign out</span>
                   </div>
 
                 </div>

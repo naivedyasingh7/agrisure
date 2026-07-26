@@ -351,13 +351,19 @@ async def detect_image(file: UploadFile = File(...)):
     content = await file.read()
     file_size_kb = round(len(content) / 1024, 1)
 
-    # 4-Point Quality Verification Checklist Logic
+    # 5-Point Quality & Anti-Fraud Verification Checklist Logic
     clarity_passed = not is_simulated_blur and file_size_kb >= 0.1
     coverage_passed = not is_simulated_blur
     lighting_passed = not ("dark" in filename_lower)
-    geotag_passed = True
+    
+    # Anti-Fraud Stamps & Registered Land Cross-Check
+    has_stamp_fail_flag = any(k in filename_lower for k in ["no_stamp", "unstamped", "no_timestamp", "missing_stamp", "nostamp"])
+    has_land_mismatch_flag = any(k in filename_lower for k in ["mismatch", "wrong_land", "fake_location", "unregistered", "other_farm"])
+    
+    timestamp_stamp_passed = not (is_simulated_blur or has_stamp_fail_flag)
+    land_crosscheck_passed = not (is_simulated_blur or has_land_mismatch_flag or has_stamp_fail_flag)
 
-    all_passed = clarity_passed and coverage_passed and lighting_passed and geotag_passed
+    all_passed = clarity_passed and coverage_passed and lighting_passed and timestamp_stamp_passed and land_crosscheck_passed
 
     checklist = [
         {
@@ -382,11 +388,18 @@ async def detect_image(file: UploadFile = File(...)):
             "detail": "Optimal daylight illumination" if lighting_passed else "Severe underexposure / heavy backlight shadow"
         },
         {
-            "id": "geotag",
-            "name": "GPS & Guided Motion Anti-Spoofing",
-            "passed": geotag_passed,
-            "score": 98,
-            "detail": "EXIF GPS coordinates & 3D compass vectors verified within farm polygon"
+            "id": "timestamp_stamp",
+            "name": "Embedded Timestamp & Location Stamp",
+            "passed": timestamp_stamp_passed,
+            "score": 98 if timestamp_stamp_passed else 0,
+            "detail": "Camera timestamp & location watermark verified on image" if timestamp_stamp_passed else "REJECTED: Missing required timestamp and location stamp overlay"
+        },
+        {
+            "id": "land_crosscheck",
+            "name": "Registered Land Location Cross-Check",
+            "passed": land_crosscheck_passed,
+            "score": 96 if land_crosscheck_passed else 0,
+            "detail": "Location stamp matched registered plot (28.6139° N, 77.2090° E)" if land_crosscheck_passed else "REJECTED FRAUD RISK: Image location does not match farmer's registered land plot boundary"
         }
     ]
 
