@@ -17,9 +17,9 @@ export default function TechStackView() {
       icon: <Layers size={24} color="var(--color-forestGreen600)" />
     },
     {
-      title: 'Multi-Source Fusion Engine',
-      tech: 'Satellite NDVI + IMD Weather API',
-      desc: 'Retrieves automated weather anomaly reports (precipitation indexes) from local stations and calculates Sentinel-2 NDVI vegetative health drop charts to cross-verify physical damage declarations.',
+      title: 'Multi-Source Fusion Engine & Sentinel Hub Satellite',
+      tech: 'Sentinel Hub API Key (10m Sentinel-2 Infrared) + IMD Weather API',
+      desc: 'Connects directly to Sentinel Hub using API Key (PLAKdf0aec42496540158b9ff7cc32b2d1fe) to pull real-time 10m spatial resolution Sentinel-2 Near-Infrared (NIR), NDVI vegetation heatmaps, and flood risk overlays for any farm coordinates.',
       icon: <Cloud size={24} color="var(--color-replasticVistaBlue)" />
     },
     {
@@ -32,7 +32,7 @@ export default function TechStackView() {
 
   return (
     <section style={{ padding: '60px 0 100px 0' }}>
-      
+
       {/* Header */}
       <div className="g-row" style={{ marginBottom: '60px' }}>
         <div className="g-col xxl-14 sm-22">
@@ -50,14 +50,14 @@ export default function TechStackView() {
       <div className="g-row" style={{ marginBottom: '60px' }}>
         <div className="g-col xxl-24">
           <div className="image-reveal" style={{ height: '350px', borderRadius: '16px', overflow: 'hidden' }}>
-            <img 
-              src={PINTEREST_IMAGES.heroCover} 
-              alt="Tech stack visual" 
+            <img
+              src={PINTEREST_IMAGES.heroCover}
+              alt="Tech stack visual"
               onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = 'https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?auto=format&fit=crop&q=80&w=1000';
               }}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} 
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
             />
           </div>
         </div>
@@ -66,13 +66,13 @@ export default function TechStackView() {
       {/* Tech Cards Grid */}
       <div className="g-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
         {components.map((comp, idx) => (
-          <div 
-            key={idx} 
+          <div
+            key={idx}
             className="animate-on-scroll"
-            style={{ 
-              backgroundColor: 'var(--color-brightIvory25)', 
-              padding: '36px', 
-              borderRadius: '12px', 
+            style={{
+              backgroundColor: 'var(--color-brightIvory25)',
+              padding: '36px',
+              borderRadius: '12px',
               border: '1px solid rgba(36, 31, 33, 0.05)',
               display: 'flex',
               flexDirection: 'column',
@@ -80,10 +80,10 @@ export default function TechStackView() {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <div style={{ 
-                width: '48px', 
-                height: '48px', 
-                borderRadius: '8px', 
+              <div style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '8px',
                 backgroundColor: 'var(--color-brightIvory50)',
                 display: 'flex',
                 alignItems: 'center',

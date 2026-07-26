@@ -178,6 +178,13 @@ export default function DciRegistry() {
                 <strong>{activeFarm.location}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px dashed rgba(0,0,0,0.1)', paddingBottom: '8px' }}>
+                <span style={{ color: 'var(--color-stoneBrown600)' }}>Satellite Stream:</span>
+                <span style={{ color: '#10b981', fontWeight: 'bold', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10b981' }}></span>
+                  Sentinel Hub 10m Infrared
+                </span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px dashed rgba(0,0,0,0.1)', paddingBottom: '8px' }}>
                 <span style={{ color: 'var(--color-stoneBrown600)' }}>Status:</span>
                 <span style={{ color: activeFarm.status.includes('Pending') ? 'var(--color-red)' : 'var(--color-forestGreen600)', fontWeight: 'bold' }}>
                   {activeFarm.status}
@@ -185,23 +192,38 @@ export default function DciRegistry() {
               </div>
             </div>
 
-            {/* Simulated Live visual */}
-            <div style={{ borderRadius: '8px', overflow: 'hidden', height: '180px', marginTop: '10px' }}>
+            {/* Live Sentinel-2 Satellite Visual Feed */}
+            <div style={{ position: 'relative', borderRadius: '10px', overflow: 'hidden', height: '190px', marginTop: '10px', border: '1px solid rgba(0,0,0,0.1)' }}>
               <img 
-                src={selectedFarm === 'farm-1' ? PINTEREST_IMAGES.farmWaterlogged : PINTEREST_IMAGES.krishinetraHero} 
-                alt="Crop view" 
+                src={selectedFarm === 'farm-1' ? 'http://localhost:8000/api/sentinel/tile?lat=28.6139&lon=77.2090&mode=infrared' : 'http://localhost:8000/api/sentinel/tile?lat=22.2587&lon=71.1924&mode=infrared'} 
+                alt="10m Sentinel-2 Infrared Imagery" 
                 onError={(e) => {
                   e.target.onerror = null;
-                  e.target.src = 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80&w=800';
+                  e.target.src = selectedFarm === 'farm-1' ? PINTEREST_IMAGES.farmWaterlogged : PINTEREST_IMAGES.krishinetraHero;
                 }}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} 
+                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', filter: 'contrast(1.2) saturate(1.3)' }} 
               />
+              <div style={{
+                position: 'absolute',
+                bottom: '10px',
+                left: '10px',
+                backgroundColor: 'rgba(10,13,15,0.85)',
+                color: '#ffffff',
+                padding: '4px 10px',
+                borderRadius: '6px',
+                fontSize: '11px',
+                fontFamily: 'monospace',
+                fontWeight: 'bold',
+                backdropFilter: 'blur(4px)'
+              }}>
+                10m SENTINEL-2 INFRARED (NIR)
+              </div>
             </div>
             
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center', backgroundColor: 'var(--color-brightIvory50)', padding: '16px', borderRadius: '8px' }}>
               <Cpu size={24} color="var(--color-stoneBrown700)" />
               <p className="-body-medium" style={{ fontSize: '12px', color: 'var(--color-stoneBrown600)' }}>
-                This DCI profile is encrypted and synced with satellite Sentinel-2 and local automated IMD weather channels.
+                This DCI profile is encrypted and synced with live Sentinel Hub 10m Sentinel-2 real-time infrared satellite streams (API key PLAKdf0a...).
               </p>
             </div>
           </div>

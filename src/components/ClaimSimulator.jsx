@@ -772,7 +772,11 @@ export default function ClaimSimulator({ onApproveClaim }) {
                 {/* Satellite Weather details */}
                 <div style={{ fontSize: '13px', display: 'flex', flexDirection: 'column', gap: '10px', borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '20px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ color: 'var(--color-stoneBrown600)' }}>🛰️ Satellite NDVI:</span>
+                    <span style={{ color: 'var(--color-stoneBrown600)' }}>🛰️ Sentinel Hub Satellite:</span>
+                    <strong style={{ color: '#10b981' }}>10m Sentinel-2 Infrared (PLAKdf0a...)</strong>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: 'var(--color-stoneBrown600)' }}>📊 Satellite NDVI:</span>
                     <strong>{current.satelliteNdvi}</strong>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>

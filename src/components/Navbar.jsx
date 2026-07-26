@@ -67,6 +67,7 @@ export default function Navbar({ activeView, setActiveView }) {
 
   const navItems = [
     { id: 'home', label: 'Overview' },
+    { id: 'sentinel', label: '10m Sentinel Infrared' },
     { id: 'registry', label: 'DCI Registry' },
     { id: 'demo', label: 'Live Inspector' },
   ];

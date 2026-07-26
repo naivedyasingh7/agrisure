@@ -11,8 +11,13 @@ import Footer from './components/Footer';
 // Views
 import DciRegistry from './components/DciRegistry';
 import ClaimSimulator from './components/ClaimSimulator';
+<<<<<<< HEAD
 import AuditDashboard from './components/AuditDashboard';
 import SettingsView from './components/SettingsView';
+=======
+import TechStackView from './components/TechStackView';
+import SentinelExplorer from './components/SentinelExplorer';
+>>>>>>> d791752 (api key)
 
 export default function App() {
   const [activeView, setActiveView] = useState('home');
@@ -152,6 +157,8 @@ export default function App() {
             <WorkflowOverview />
           </>
         )}
+
+        {activeView === 'sentinel' && <SentinelExplorer />}
 
         {activeView === 'registry' && <DciRegistry />}
 
