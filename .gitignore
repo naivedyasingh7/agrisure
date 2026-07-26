@@ -1,0 +1,31 @@
+# Logs & Debug
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Node dependencies & build output
+node_modules
+dist
+dist-ssr
+*.local
+
+# Python & ML artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.db
+runs/
+*.pt
+*.onnx
+temp_*
+crop_dataset/
+
+# Editor & OS files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.sln
