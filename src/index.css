@@ -59,33 +59,33 @@ a {
 /* Titles and Typography classes corresponding to the original Nuxt project */
 .-title-1 {
   font-family: var(--font-serif);
-  font-size: clamp(60px, 4vw + 30px, 120px);
+  font-size: clamp(44px, 3.2vw + 20px, 76px);
   font-weight: 500;
-  line-height: 1.05;
-  letter-spacing: -0.04em;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
 }
 
 .-title-2, .-title-2-medium {
   font-family: var(--font-serif);
-  font-size: clamp(32px, 2.5vw + 20px, 64px);
+  font-size: clamp(26px, 1.8vw + 16px, 42px);
   font-weight: 500;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 .-title-3, .-title-3-medium {
   font-family: var(--font-serif);
-  font-size: clamp(24px, 2vw + 16px, 48px);
+  font-size: clamp(19px, 1.1vw + 11px, 26px);
   font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
 }
 
 .-title-4-medium {
   font-family: var(--font-serif);
-  font-size: clamp(20px, 1.5vw + 14px, 32px);
+  font-size: clamp(16px, 0.9vw + 11px, 21px);
   font-weight: 500;
-  line-height: 1.25;
+  line-height: 1.35;
 }
 
 .-title-8-medium {
@@ -829,12 +829,13 @@ a {
 }
 
 .image-reveal img {
-  opacity: 0;
-  transform: scale(1.15);
-  transition: opacity 0.1s 0.6s, transform 1.4s cubic-bezier(0.19, 1, 0.22, 1);
+  opacity: 1;
+  transform: scale(1);
+  transition: transform 1.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.image-reveal.revealed img {
+.image-reveal.revealed img,
+.image-reveal.visible img {
   opacity: 1;
   transform: scale(1);
 }

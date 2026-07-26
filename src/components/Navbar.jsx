@@ -35,14 +35,14 @@ export default function Navbar({ activeView, setActiveView, claimsCount, onOpenC
             </a>
           ))}
           <a
-            href="#tech"
-            className={`nav-link ${activeView === 'tech' ? 'active' : ''}`}
+            href="#audit"
+            className={`nav-link ${activeView === 'audit' ? 'active' : ''}`}
             onClick={(e) => {
               e.preventDefault();
-              handleNavClick('tech');
+              handleNavClick('audit');
             }}
           >
-            Tech Stack
+            History & Records
           </a>
         </nav>
 

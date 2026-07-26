@@ -67,7 +67,7 @@ export default function CollectionsCTA({ setActiveView }) {
               <div key={p.id} className="collection-item" style={{ marginBottom: '40px' }}>
                 
                 {/* Media Column */}
-                <div className="collection-media image-reveal">
+                <div className="collection-media image-reveal" style={{ backgroundColor: 'var(--color-brightIvory200)' }}>
                   <img 
                     src={p.img} 
                     alt={`${p.label} diagram showcase`} 
@@ -75,7 +75,7 @@ export default function CollectionsCTA({ setActiveView }) {
                       e.target.onerror = null;
                       e.target.src = 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80&w=1000';
                     }}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', opacity: 1, display: 'block' }}
                   />
                 </div>
 

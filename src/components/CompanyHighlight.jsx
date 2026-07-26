@@ -17,19 +17,19 @@ export default function CompanyHighlight({ setActiveView }) {
   ];
 
   return (
-    <section className="company-highlight" style={{ padding: '80px 0', borderTop: '1px solid rgba(36, 31, 33, 0.1)' }}>
-      <div className="g-row" style={{ display: 'grid', gridTemplateColumns: '1.8fr 1fr', gap: '60px' }}>
+    <section className="company-highlight" style={{ padding: '60px 0', borderTop: '1px solid rgba(36, 31, 33, 0.1)' }}>
+      <div className="g-row" style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: '40px' }}>
         
         {/* Main highlight text */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <h4 className="-title-8-medium" style={{ color: 'var(--color-stoneBrown800)' }}>
-              KrishiNetra AI · Est. 2026
+            <h4 className="-title-8-medium" style={{ color: 'var(--color-stoneBrown800)', fontSize: '14px', letterSpacing: '0.05em' }}>
+              KRISHINETRA AI · EST. 2026
             </h4>
             <div style={{ flexGrow: 1, height: '1px', backgroundColor: 'rgba(36, 31, 33, 0.1)' }}></div>
           </div>
 
-          <div className="image-reveal" style={{ height: '350px', width: '100%' }}>
+          <div className="image-reveal" style={{ height: '260px', width: '100%', borderRadius: '12px', overflow: 'hidden' }}>
             <img 
               src={PINTEREST_IMAGES.sustainabilityLand} 
               alt="Ecosystem reserve satellite tracking overview" 
@@ -41,7 +41,7 @@ export default function CompanyHighlight({ setActiveView }) {
             />
           </div>
 
-          <h2 className="-title-3-medium animate-on-scroll" style={{ color: 'var(--color-stoneBrown800)', lineHeight: '1.3' }}>
+          <h2 className="animate-on-scroll" style={{ color: 'var(--color-stoneBrown800)', fontFamily: 'var(--font-serif)', fontSize: 'clamp(18px, 1.1vw + 9px, 23px)', fontWeight: '400', lineHeight: '1.45', letterSpacing: '-0.01em' }}>
             Instead of sending field investigators to review claims months after a disaster, KrishiNetra AI evaluates crop health instantly. By layering satellite data, precipitation timelines, and guided farmer videos, we reduce claim settlement times from 90 days to seconds.
           </h2>
         </div>

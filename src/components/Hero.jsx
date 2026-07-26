@@ -7,20 +7,11 @@ export default function Hero({ setActiveView }) {
     <section className="hero-section">
       <div className="g-row">
         <div className="g-col xxl-16 sm-22">
-          <h1 className="-title-1 animate-on-scroll" style={{ color: 'var(--color-stoneBrown800)' }}>
+          <h1 className="-title-1 animate-on-scroll" style={{ color: 'var(--color-stoneBrown800)', marginBottom: '30px' }}>
             From Crop Image<br />
             to Claim Decision<br />
             in Seconds.
           </h1>
-          
-          <div className="hero-tagline animate-on-scroll">
-            <div className="category-tag -nature" style={{ color: 'var(--color-forestGreen600)' }}>
-              <span>🚀 Hackathon Champion</span>
-            </div>
-            <p className="-body-small-medium" style={{ color: 'var(--color-stoneBrown600)' }}>
-              Digital Crop Identity (DCI) & Multi-Source Fusion
-            </p>
-          </div>
         </div>
       </div>
 

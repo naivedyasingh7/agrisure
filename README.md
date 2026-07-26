@@ -1,16 +1,49 @@
-# React + Vite
+# AgriSure (KrishiNetra AI)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+AgriSure / KrishiNetra AI is an AI-powered crop insurance claim verification and audit engine. It combines computer vision (Ultralytics YOLOv8), multi-source satellite telemetry (NDVI / Health Index), guided field motion proofs, and automated claim decision execution.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🌩️ Cloud Relational Database Integration (PostgreSQL / Neon DB)
 
-## React Compiler
+AgriSure supports both local offline development using SQLite (`agrisure.db`) and production cloud hosting using **Cloud PostgreSQL / Neon DB**.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. Requirements
 
-## Expanding the Oxlint configuration
+Install PostgreSQL driver dependencies for Python:
+```bash
+pip install psycopg2-binary
+# or
+pip install psycopg
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+### 2. Configure Environment Variable
+
+Set your PostgreSQL / Neon DB connection URI in your environment or `.env` file:
+```bash
+export DATABASE_URL="postgresql://username:password@ep-cool-lake-123456.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
+```
+
+### 3. Migrate Local SQLite Data to Cloud PostgreSQL / Neon DB
+
+Use the built-in migration script to copy all existing farms, claims, and telemetry history from `agrisure.db` to your Cloud PostgreSQL database:
+
+```bash
+python migrate_to_postgres.py --url "postgresql://username:password@ep-cool-lake-123456.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
+```
+
+---
+
+## 🚀 Running locally
+
+### 1. Start Python Backend API
+```bash
+python backend.py
+```
+*(Runs FastAPI server on `http://localhost:8000`)*
+
+### 2. Start Frontend Dev Server
+```bash
+npm run dev
+```
+*(Runs Vite React application)*

@@ -77,7 +77,7 @@ export default function Footer({ setActiveView }) {
           <a href="#home" onClick={() => handleLinkClick('home')}>Overview</a>
           <a href="#registry" onClick={() => handleLinkClick('registry')}>DCI Registry</a>
           <a href="#demo" onClick={() => handleLinkClick('demo')}>Live Inspector</a>
-          <a href="#tech" onClick={() => handleLinkClick('tech')}>Tech Stack</a>
+          <a href="#audit" onClick={() => handleLinkClick('audit')}>History & Records</a>
         </div>
 
         {/* Technical credentials links */}

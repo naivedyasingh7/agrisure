@@ -11,7 +11,7 @@ import Footer from './components/Footer';
 // Views
 import DciRegistry from './components/DciRegistry';
 import ClaimSimulator from './components/ClaimSimulator';
-import TechStackView from './components/TechStackView';
+import AuditDashboard from './components/AuditDashboard';
 
 export default function App() {
   const [activeView, setActiveView] = useState('home');
@@ -158,7 +158,7 @@ export default function App() {
           <ClaimSimulator onApproveClaim={handleApproveClaim} />
         )}
 
-        {activeView === 'tech' && <TechStackView />}
+        {(activeView === 'audit' || activeView === 'tech') && <AuditDashboard />}
       </main>
 
       {/* Footer element */}
