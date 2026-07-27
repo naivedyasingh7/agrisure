@@ -2,7 +2,7 @@ import React from 'react';
 import { PINTEREST_IMAGES } from '../assets/images';
 import { ArrowUpRight } from 'lucide-react';
 
-export default function CompanyHighlight({ setActiveView }) {
+export default function CompanyHighlight({ setActiveView, onCropClick }) {
   const news = [
     {
       title: 'Reducing Crop Payout Disputes by 74% with Digital Crop Identities',
@@ -29,7 +29,12 @@ export default function CompanyHighlight({ setActiveView }) {
             <div style={{ flexGrow: 1, height: '1px', backgroundColor: 'rgba(36, 31, 33, 0.1)' }}></div>
           </div>
 
-          <div className="image-reveal" style={{ height: '260px', width: '100%', borderRadius: '12px', overflow: 'hidden' }}>
+          <div 
+            className="image-reveal" 
+            onClick={() => onCropClick && onCropClick('sugarcane')}
+            style={{ height: '260px', width: '100%', borderRadius: '12px', overflow: 'hidden', cursor: 'pointer' }}
+            title="Click to view Sugarcane Crop Intelligence"
+          >
             <img 
               src={PINTEREST_IMAGES.sustainabilityLand} 
               alt="Ecosystem reserve satellite tracking overview" 

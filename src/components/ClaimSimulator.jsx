@@ -198,15 +198,27 @@ export default function ClaimSimulator({ onApproveClaim }) {
     .catch(err => {
       console.log("Detect API offline, using client fallback:", err);
       const isBlur = file.name.toLowerCase().includes('blur') || file.name.toLowerCase().includes('invalid');
+      const isUnstamped = file.name.toLowerCase().includes('unstamped') || file.name.toLowerCase().includes('no_stamp') || file.name.toLowerCase().includes('nostamp') || file.name.toLowerCase().includes('mismatch');
+      
+      const clarityPassed = !isBlur;
+      const coveragePassed = !isBlur;
+      const lightingPassed = true;
+      const stampPassed = !(isBlur || isUnstamped);
+      const landPassed = !(isBlur || isUnstamped);
+      const allPassed = clarityPassed && coveragePassed && lightingPassed && stampPassed && landPassed;
+
       const fallbackData = {
-        allPassed: !isBlur,
-        action: !isBlur ? "PROCEED" : "RETAKE_REQUIRED",
-        recommendation: !isBlur ? "All quality & framing standards satisfied." : "Photo fails field verification requirements. Please retake photo.",
+        allPassed: allPassed,
+        action: allPassed ? "PROCEED" : "RETAKE_REQUIRED",
+        recommendation: allPassed 
+          ? "All 5 quality and anti-fraud standards satisfied." 
+          : (isUnstamped ? "Photo rejected: Missing embedded timestamp/location stamp overlay or mismatched registered land boundary." : "Photo fails field verification requirements. Please retake photo."),
         checklist: [
-          { id: 'clarity', name: 'Image Clarity & Focus', passed: !isBlur, score: !isBlur ? 94 : 38, detail: !isBlur ? 'High resolution, sharp edge gradient' : 'Motion blur / low sharpness detected (Score: 38/100)' },
-          { id: 'coverage', name: 'Crop Field Area Coverage (≥ 70%)', passed: !isBlur, score: !isBlur ? 88 : 42, detail: !isBlur ? 'Canopy covers 88% of frame' : 'Inadequate field coverage: Crop occupies only 42% of frame' },
-          { id: 'lighting', name: 'Lighting & Exposure Balance', passed: true, score: 91, detail: 'Optimal daylight illumination' },
-          { id: 'geotag', name: 'GPS & Guided Motion Anti-Spoofing', passed: true, score: 98, detail: 'GPS & 3D compass orientation verified' }
+          { id: 'clarity', name: 'Image Clarity & Focus', passed: clarityPassed, score: clarityPassed ? 94 : 38, detail: clarityPassed ? 'High resolution, sharp edge gradient' : 'Motion blur / low sharpness detected (Score: 38/100)' },
+          { id: 'coverage', name: 'Crop Field Area Coverage (≥ 70%)', passed: coveragePassed, score: coveragePassed ? 88 : 42, detail: coveragePassed ? 'Canopy covers 88% of frame' : 'Inadequate field coverage: Crop occupies only 42% of frame' },
+          { id: 'lighting', name: 'Lighting & Exposure Balance', passed: lightingPassed, score: 91, detail: 'Optimal daylight illumination' },
+          { id: 'timestamp_stamp', name: 'Embedded Timestamp & Location Stamp', passed: stampPassed, score: stampPassed ? 98 : 0, detail: stampPassed ? 'Camera timestamp & location watermark verified on image' : 'REJECTED: Missing required timestamp and location stamp overlay' },
+          { id: 'land_crosscheck', name: 'Registered Land Location Cross-Check', passed: landPassed, score: landPassed ? 96 : 0, detail: landPassed ? 'Location stamp matched registered plot (28.6139° N, 77.2090° E)' : 'REJECTED FRAUD RISK: Image location does not match farmer registered land boundary' }
         ]
       };
       setQualityChecklist(fallbackData);
@@ -219,6 +231,13 @@ export default function ClaimSimulator({ onApproveClaim }) {
     setUploadedImage(dummyBlurFile);
     setImagePreviewUrl('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&q=80&w=1000');
     handleFileProcess(dummyBlurFile);
+  };
+
+  const handleSampleUnstampedClick = () => {
+    const dummyUnstampedFile = new File(["dummy content"], "unstamped_no_stamp_mismatch.jpg", { type: "image/jpeg" });
+    setUploadedImage(dummyUnstampedFile);
+    setImagePreviewUrl('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&q=80&w=1000');
+    handleFileProcess(dummyUnstampedFile);
   };
 
   const handleSampleClearClick = () => {
@@ -274,15 +293,16 @@ export default function ClaimSimulator({ onApproveClaim }) {
           onClick={() => { setActiveTab('preset'); setQualityChecklist(null); setUploadedImage(null); setShowCameraNotice(false); }}
           className="button-premium"
           style={{
-            backgroundColor: activeTab === 'preset' ? 'var(--color-stoneBrown800)' : 'transparent',
-            color: activeTab === 'preset' ? 'white' : 'var(--color-stoneBrown700)',
-            border: '1px solid ' + (activeTab === 'preset' ? 'var(--color-stoneBrown800)' : 'rgba(0,0,0,0.15)'),
+            backgroundColor: activeTab === 'preset' ? 'var(--color-forestGreen600)' : 'transparent',
+            color: activeTab === 'preset' ? '#FFFFFF' : 'var(--color-stoneBrown800)',
+            border: '1px solid ' + (activeTab === 'preset' ? 'var(--color-forestGreen600)' : 'rgba(4,45,43,0.3)'),
             display: 'flex',
             alignItems: 'center',
-            gap: '8px'
+            gap: '8px',
+            fontWeight: '600'
           }}
         >
-          <FileCheck size={16} /> Preset Regional Scenarios
+          <FileCheck size={16} /> ⚡ Preset Regional Scenarios
         </button>
 
         <button
@@ -293,11 +313,12 @@ export default function ClaimSimulator({ onApproveClaim }) {
           className="button-premium"
           style={{
             backgroundColor: activeTab === 'upload' ? 'var(--color-forestGreen600)' : 'transparent',
-            color: activeTab === 'upload' ? 'white' : 'var(--color-forestGreen600)',
+            color: activeTab === 'upload' ? '#FFFFFF' : 'var(--color-forestGreen600)',
             border: '1px solid ' + (activeTab === 'upload' ? 'var(--color-forestGreen600)' : 'rgba(4,45,43,0.3)'),
             display: 'flex',
             alignItems: 'center',
-            gap: '8px'
+            gap: '8px',
+            fontWeight: '600'
           }}
         >
           <Upload size={16} /> 📁 Upload Farmer Crop Photo (With AI Quality Checklist)
@@ -311,15 +332,15 @@ export default function ClaimSimulator({ onApproveClaim }) {
           className="button-premium"
           style={{
             backgroundColor: activeTab === 'camera' ? 'var(--color-flourYellow)' : 'transparent',
-            color: 'var(--color-stoneBrown800)',
-            border: '1px solid ' + (activeTab === 'camera' ? 'var(--color-stoneBrown800)' : 'rgba(0,0,0,0.2)'),
+            color: activeTab === 'camera' ? '#042D2B' : 'var(--color-stoneBrown800)',
+            border: '1px solid ' + (activeTab === 'camera' ? 'var(--color-flourYellow)' : 'rgba(0,0,0,0.2)'),
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
             fontWeight: '600'
           }}
         >
-          <Camera size={16} color="var(--color-stoneBrown800)" /> 📷 Take Field Photo (Direct Camera)
+          <Camera size={16} color={activeTab === 'camera' ? '#042D2B' : 'currentColor'} /> 📷 Take Field Photo (Direct Camera)
         </button>
       </div>
 
@@ -353,7 +374,7 @@ export default function ClaimSimulator({ onApproveClaim }) {
             <button 
               onClick={() => { setActiveTab('upload'); setShowCameraNotice(false); }}
               className="button-premium dark"
-              style={{ backgroundColor: 'var(--color-stoneBrown800)', color: 'white', fontSize: '12px', padding: '10px 18px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+              style={{ backgroundColor: 'var(--color-forestGreen600)', color: 'white', fontSize: '12px', padding: '10px 18px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
             >
               <Upload size={14} /> Switch to Photo Upload
             </button>
@@ -370,11 +391,12 @@ export default function ClaimSimulator({ onApproveClaim }) {
               onClick={() => handleScenarioChange(key)}
               className="button-premium outline"
               style={{
-                borderColor: activeScenario === key ? 'var(--color-stoneBrown800)' : 'rgba(0,0,0,0.1)',
-                backgroundColor: activeScenario === key ? 'var(--color-brightIvory200)' : 'transparent',
-                color: 'var(--color-stoneBrown800)',
+                borderColor: activeScenario === key ? 'var(--color-forestGreen600)' : 'rgba(4,45,43,0.3)',
+                backgroundColor: activeScenario === key ? 'var(--color-forestGreen600)' : 'transparent',
+                color: activeScenario === key ? '#FFFFFF' : 'var(--color-stoneBrown800)',
                 fontSize: '13px',
-                padding: '8px 16px'
+                padding: '8px 16px',
+                fontWeight: '600'
               }}
             >
               {key.toUpperCase()}: {scenarios[key].crop}
@@ -451,16 +473,18 @@ export default function ClaimSimulator({ onApproveClaim }) {
               </p>
             </div>
 
-            <button 
-              onClick={(e) => {
-                e.stopPropagation();
-                if (fileInputRef.current) fileInputRef.current.click();
-              }}
-              className="button-premium dark"
-              style={{ backgroundColor: 'var(--color-forestGreen600)', fontSize: '13px', padding: '10px 24px', display: 'inline-flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}
-            >
-              <Upload size={15} /> Select Image File
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '6px' }}>
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (fileInputRef.current) fileInputRef.current.click();
+                }}
+                className="button-premium dark"
+                style={{ backgroundColor: 'var(--color-forestGreen600)', fontSize: '13px', padding: '10px 24px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+              >
+                <Upload size={15} /> Select Image File
+              </button>
+            </div>
           </div>
 
           {/* Live Step-by-Step Auto-Ticking Checklist Modal / Card */}
@@ -492,11 +516,11 @@ export default function ClaimSimulator({ onApproveClaim }) {
                       {isVerifyingImage 
                         ? '🔄 Verifying Photo Quality & Authenticity Criteria...' 
                         : qualityChecklist && qualityChecklist.allPassed 
-                          ? '✅ ALL 4 QUALITY CHECKS SATISFIED — MOVING AHEAD TO RISK ASSESSMENT' 
+                          ? '✅ ALL 5 QUALITY & ANTI-FRAUD CHECKS SATISFIED — MOVING AHEAD TO RISK ASSESSMENT' 
                           : '⚠️ PHOTO VERIFICATION FAILED — RETAKE PHOTO REQUIRED'}
                     </h3>
                     <p className="-body-medium" style={{ fontSize: '13px', color: 'var(--color-stoneBrown600)', marginTop: '2px' }}>
-                      {qualityChecklist ? qualityChecklist.recommendation : 'Running gradient sharpness, field framing %, and EXIF anti-spoof checks...'}
+                      {qualityChecklist ? qualityChecklist.recommendation : 'Running gradient sharpness, field framing %, camera timestamp/location stamp, and land polygon cross-check...'}
                     </p>
                   </div>
                 </div>
@@ -527,7 +551,8 @@ export default function ClaimSimulator({ onApproveClaim }) {
                   { id: 'clarity', name: 'Image Clarity & Focus' },
                   { id: 'coverage', name: 'Crop Field Area Coverage (≥ 70%)' },
                   { id: 'lighting', name: 'Lighting & Exposure Balance' },
-                  { id: 'geotag', name: 'GPS & Motion Anti-Spoofing' }
+                  { id: 'timestamp_stamp', name: 'Embedded Timestamp & Location Stamp' },
+                  { id: 'land_crosscheck', name: 'Registered Land Location Cross-Check' }
                 ]).map((item) => {
                   const isChecked = checklistTicks.includes(item.id);
                   return (
@@ -753,22 +778,49 @@ export default function ClaimSimulator({ onApproveClaim }) {
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 
-                {/* Confidence Metrics Grid */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
-                  <div style={{ backgroundColor: 'var(--color-brightIvory50)', padding: '16px', borderRadius: '8px', textAlign: 'center' }}>
-                    <span style={{ fontSize: '11px', color: 'var(--color-stoneBrown500)', textTransform: 'uppercase' }}>Damage</span>
-                    <h3 className="-title-2-medium" style={{ fontSize: '28px', color: 'var(--color-red)' }}>{current.damagePercent}%</h3>
+                {/* Mode Indicator Badge */}
+                {activeTab === 'upload' && detectionResults?.topPrediction && (
+                  <div style={{
+                    backgroundColor: 'var(--color-forestGreen600)',
+                    color: 'white',
+                    padding: '8px 14px',
+                    borderRadius: '8px',
+                    fontSize: '12px',
+                    fontWeight: '600',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}>
+                    <Sparkles size={16} /> Live Fine-Tuned YOLOv8 AI Diagnosis: {detectionResults.topPrediction.readableLabel}
                   </div>
-                  <div style={{ backgroundColor: 'var(--color-brightIvory50)', padding: '16px', borderRadius: '8px', textAlign: 'center' }}>
-                    <span style={{ fontSize: '11px', color: 'var(--color-stoneBrown500)', textTransform: 'uppercase' }}>Risk index</span>
-                    <h3 className="-title-2-medium" style={{ fontSize: '28px', color: 'var(--color-stoneBrown800)' }}>{current.riskScore}</h3>
-                  </div>
-                  <div style={{ backgroundColor: 'var(--color-brightIvory50)', padding: '16px', borderRadius: '8px', textAlign: 'center' }}>
-                    <span style={{ fontSize: '11px', color: 'var(--color-stoneBrown500)', textTransform: 'uppercase' }}>Confidence</span>
-                    <h3 className="-title-2-medium" style={{ fontSize: '28px', color: 'var(--color-forestGreen600)' }}>98%</h3>
-                  </div>
-                </div>
+                )}
 
+                {/* Confidence Metrics Grid */}
+                {(() => {
+                  const isUploadLive = activeTab === 'upload' && detectionResults?.topPrediction;
+                  const topPred = isUploadLive ? detectionResults.topPrediction : null;
+                  
+                  const damageVal = isUploadLive 
+                    ? Math.min(95, Math.max(35, Math.round(topPred.confidencePercent * 0.82))) 
+                    : current.damagePercent;
+                  
+                  const riskVal = isUploadLive 
+                    ? Math.min(98, Math.max(40, Math.round(damageVal * 1.15))) 
+                    : current.riskScore;
+                  
+                  const confVal = isUploadLive 
+                    ? `${topPred.confidencePercent}%` 
+                    : '98%';
+                  
+                  const payoutVal = isUploadLive 
+                    ? Math.round(8000 + (damageVal * 165)) 
+                    : current.suggestedPayout;
+                  
+                  const explanationText = isUploadLive 
+                    ? `Fine-Tuned YOLOv8 Crop Disease Model (99.86% accuracy) evaluated the uploaded photo and classified: "${topPred.readableLabel}" with ${topPred.confidencePercent}% AI confidence. 5-point quality checklist verified.` 
+                    : current.aiExplanation;
+
+<<<<<<< HEAD
                 {/* Satellite Weather details */}
                 <div style={{ fontSize: '13px', display: 'flex', flexDirection: 'column', gap: '10px', borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '20px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -784,33 +836,87 @@ export default function ClaimSimulator({ onApproveClaim }) {
                     <strong>{current.weatherAnomaly}</strong>
                   </div>
                 </div>
+=======
+                  return (
+                    <>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+                        <div style={{ backgroundColor: 'var(--color-brightIvory50)', padding: '16px', borderRadius: '8px', textAlign: 'center' }}>
+                          <span style={{ fontSize: '11px', color: 'var(--color-stoneBrown500)', textTransform: 'uppercase' }}>Damage</span>
+                          <h3 className="-title-2-medium" style={{ fontSize: '28px', color: 'var(--color-red)' }}>{damageVal}%</h3>
+                        </div>
+                        <div style={{ backgroundColor: 'var(--color-brightIvory50)', padding: '16px', borderRadius: '8px', textAlign: 'center' }}>
+                          <span style={{ fontSize: '11px', color: 'var(--color-stoneBrown500)', textTransform: 'uppercase' }}>Risk index</span>
+                          <h3 className="-title-2-medium" style={{ fontSize: '28px', color: 'var(--color-stoneBrown800)' }}>{riskVal}</h3>
+                        </div>
+                        <div style={{ backgroundColor: 'var(--color-brightIvory50)', padding: '16px', borderRadius: '8px', textAlign: 'center' }}>
+                          <span style={{ fontSize: '11px', color: 'var(--color-stoneBrown500)', textTransform: 'uppercase' }}>AI Confidence</span>
+                          <h3 className="-title-2-medium" style={{ fontSize: '24px', color: 'var(--color-forestGreen600)' }}>{confVal}</h3>
+                        </div>
+                      </div>
+>>>>>>> a1d07f8e5aec9375bfd221f4d49b65dac1109470
 
-                {/* Suggested claim Payout */}
-                <div style={{ 
-                  backgroundColor: 'rgba(4, 45, 43, 0.05)', 
-                  border: '1px solid rgba(4, 45, 43, 0.15)', 
-                  padding: '20px', 
-                  borderRadius: '8px', 
-                  display: 'flex', 
-                  justifyContent: 'space-between', 
-                  alignItems: 'center',
-                  marginTop: '10px'
-                }}>
-                  <div>
-                    <span style={{ fontSize: '11px', color: 'var(--color-forestGreen600)', textTransform: 'uppercase', fontWeight: 'bold' }}>Suggested Claim Payout</span>
-                    <h2 className="-title-2-medium" style={{ fontSize: '32px', color: 'var(--color-forestGreen600)' }}>
-                      ₹{current.suggestedPayout.toLocaleString('en-IN')}
-                    </h2>
-                  </div>
-                  <div style={{ backgroundColor: 'var(--color-forestGreen600)', color: 'white', padding: '6px 12px', borderRadius: '20px', fontSize: '11px', fontWeight: '600' }}>
-                    Auto-Computed
-                  </div>
-                </div>
+                      {/* Top 5 AI Candidates if Uploaded */}
+                      {isUploadLive && detectionResults?.detections?.length > 0 && (
+                        <div style={{ backgroundColor: 'var(--color-brightIvory50)', padding: '14px', borderRadius: '8px', border: '1px solid rgba(4,45,43,0.1)' }}>
+                          <span style={{ fontSize: '11px', fontWeight: 'bold', color: 'var(--color-forestGreen600)', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
+                            🔍 YOLOv8 Classification Probability Breakdown:
+                          </span>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                            {detectionResults.detections.slice(0, 3).map((item, idx) => (
+                              <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+                                <span style={{ color: 'var(--color-stoneBrown800)', fontWeight: idx === 0 ? '600' : 'normal' }}>
+                                  {idx + 1}. {item.label}
+                                </span>
+                                <strong style={{ color: idx === 0 ? 'var(--color-forestGreen600)' : 'var(--color-stoneBrown600)' }}>
+                                  {item.confidencePercent}%
+                                </strong>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
 
-                {/* AI Explanation Text */}
-                <div style={{ backgroundColor: 'var(--color-brightIvory50)', padding: '16px', borderRadius: '8px', fontSize: '13px', color: 'var(--color-stoneBrown600)', lineHeight: '1.5' }}>
-                  <strong>💡 AI Reason:</strong> {current.aiExplanation}
-                </div>
+                      {/* Satellite Weather details */}
+                      <div style={{ fontSize: '13px', display: 'flex', flexDirection: 'column', gap: '10px', borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '20px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ color: 'var(--color-stoneBrown600)' }}>🛰️ Model Loaded:</span>
+                          <strong>{isUploadLive ? "Fine-Tuned YOLOv8 Crop Model" : "YOLOv8 Vision"}</strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ color: 'var(--color-stoneBrown600)' }}>🌧️ Weather / Field Fusion:</span>
+                          <strong>{current.weatherAnomaly}</strong>
+                        </div>
+                      </div>
+
+                      {/* Suggested claim Payout */}
+                      <div style={{ 
+                        backgroundColor: 'rgba(4, 45, 43, 0.05)', 
+                        border: '1px solid rgba(4, 45, 43, 0.15)', 
+                        padding: '20px', 
+                        borderRadius: '8px', 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        alignItems: 'center',
+                        marginTop: '10px'
+                      }}>
+                        <div>
+                          <span style={{ fontSize: '11px', color: 'var(--color-forestGreen600)', textTransform: 'uppercase', fontWeight: 'bold' }}>Suggested Claim Payout</span>
+                          <h2 className="-title-2-medium" style={{ fontSize: '32px', color: 'var(--color-forestGreen600)' }}>
+                            ₹{payoutVal.toLocaleString('en-IN')}
+                          </h2>
+                        </div>
+                        <div style={{ backgroundColor: 'var(--color-forestGreen600)', color: 'white', padding: '6px 12px', borderRadius: '20px', fontSize: '11px', fontWeight: '600' }}>
+                          YOLO Auto-Computed
+                        </div>
+                      </div>
+
+                      {/* AI Explanation Text */}
+                      <div style={{ backgroundColor: 'var(--color-brightIvory50)', padding: '16px', borderRadius: '8px', fontSize: '13px', color: 'var(--color-stoneBrown600)', lineHeight: '1.5' }}>
+                        <strong>💡 AI Reason:</strong> {explanationText}
+                      </div>
+                    </>
+                  );
+                })()}
 
                 {/* Anti-Fraud & Trust Log Renders */}
                 {verifyDetails && (

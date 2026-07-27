@@ -13,11 +13,27 @@ import DciRegistry from './components/DciRegistry';
 import ClaimSimulator from './components/ClaimSimulator';
 import AuditDashboard from './components/AuditDashboard';
 import SettingsView from './components/SettingsView';
+<<<<<<< HEAD
 import TechStackView from './components/TechStackView';
 import SentinelExplorer from './components/SentinelExplorer';
+=======
+import CropDetailModal from './components/CropDetailModal';
+>>>>>>> a1d07f8e5aec9375bfd221f4d49b65dac1109470
 
 export default function App() {
   const [activeView, setActiveView] = useState('home');
+  const [selectedCropModal, setSelectedCropModal] = useState(null);
+  
+  // Site-Wide Dark Theme State
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem('agrisure_theme') === 'dark';
+  });
+
+  // Sync Dark Theme to Document Body
+  useEffect(() => {
+    localStorage.setItem('agrisure_theme', darkMode ? 'dark' : 'light');
+    document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
   
   // Transition and Loader states
   const [curtainState, setCurtainState] = useState('idle');
@@ -43,6 +59,7 @@ export default function App() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // easeOutExpo
       smoothWheel: true,
     });
+    window.lenis = lenis;
 
     function raf(time) {
       lenis.raf(time);
@@ -51,17 +68,15 @@ export default function App() {
 
     requestAnimationFrame(raf);
 
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
-
-  // 2. Initial Brand Loader Timeout
-  useEffect(() => {
+    // Simulate loader complete after 1.8 seconds
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1600);
-    return () => clearTimeout(timer);
+    }, 1800);
+
+    return () => {
+      lenis.destroy();
+      clearTimeout(timer);
+    };
   }, []);
 
   // 3. Scroll Intersection Observer for Image Reveals & Slide-ins
@@ -92,33 +107,34 @@ export default function App() {
   // 4. Animated Page Curtain Navigation
   const changeView = (newView) => {
     if (newView === activeView) return;
-    setCurtainState('covering');
+    
+    setCurtainState('enter');
     
     setTimeout(() => {
       setActiveView(newView);
       window.scrollTo(0, 0);
-      setCurtainState('uncovering');
-      
-      setTimeout(() => {
-        setCurtainState('idle');
-      }, 600);
-    }, 600);
+      setCurtainState('exit');
+    }, 450);
+
+    setTimeout(() => {
+      setCurtainState('idle');
+    }, 900);
   };
 
-  const handleApproveClaim = (newCount) => {
-    if (typeof newCount === 'number') {
-      setClaimsCount(newCount);
-    } else {
-      setClaimsCount((prev) => Math.max(0, prev - 1));
-    }
+  const handleApproveClaim = () => {
+    setClaimsCount(prev => Math.max(0, prev - 1));
   };
 
   const handleResetClaims = () => {
     setClaimsCount(3);
   };
 
+  const handleOpenCropModal = (crop) => {
+    setSelectedCropModal(crop || 'rice');
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <div className="app-container" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>
       
       {/* Brand Intro Loader */}
       <div className={`intro-loader ${!loading ? 'fade-out' : ''}`}>
@@ -137,17 +153,19 @@ export default function App() {
         setActiveView={changeView}
         claimsCount={claimsCount}
         onOpenClaims={handleResetClaims}
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
       />
 
       {/* Main page content area */}
       <main style={{ flexGrow: 1 }}>
         {activeView === 'home' && (
           <>
-            <Hero setActiveView={changeView} />
+            <Hero setActiveView={changeView} onCropClick={handleOpenCropModal} />
             
-            <CollectionsCTA setActiveView={changeView} />
+            <CollectionsCTA setActiveView={changeView} onCropClick={handleOpenCropModal} />
             
-            <CompanyHighlight setActiveView={changeView} />
+            <CompanyHighlight setActiveView={changeView} onCropClick={handleOpenCropModal} />
             
             <LeadershipHighlight setActiveView={changeView} />
             
@@ -155,21 +173,37 @@ export default function App() {
           </>
         )}
 
+<<<<<<< HEAD
         {activeView === 'sentinel' && <SentinelExplorer />}
 
         {activeView === 'registry' && <DciRegistry />}
+=======
+        {activeView === 'registry' && <DciRegistry onCropClick={handleOpenCropModal} />}
+>>>>>>> a1d07f8e5aec9375bfd221f4d49b65dac1109470
 
         {activeView === 'demo' && (
-          <ClaimSimulator onApproveClaim={handleApproveClaim} />
+          <ClaimSimulator onApproveClaim={handleApproveClaim} onCropClick={handleOpenCropModal} />
         )}
 
-        {(activeView === 'audit' || activeView === 'tech') && <AuditDashboard />}
+        {(activeView === 'audit' || activeView === 'tech') && <AuditDashboard onCropClick={handleOpenCropModal} />}
 
         {activeView === 'settings' && <SettingsView />}
       </main>
 
       {/* Footer element */}
       <Footer setActiveView={changeView} />
+
+      {/* Crop Intelligence Modal */}
+      {selectedCropModal && (
+        <CropDetailModal 
+          crop={selectedCropModal} 
+          onClose={() => setSelectedCropModal(null)} 
+          onActionClick={(cropId) => {
+            setSelectedCropModal(null);
+            changeView(cropId === 'rice' ? 'registry' : cropId === 'cotton' ? 'demo' : 'tech');
+          }} 
+        />
+      )}
 
     </div>
   );
