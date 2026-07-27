@@ -37,15 +37,9 @@ except Exception as e:
 
 # Initialize FastAPI App
 app = FastAPI(
-<<<<<<< HEAD
-    title="KrishiNetra AI / AgriSure Production Backend Engine with YOLOv8 Vision",
-    description="Multi-Source Fusion Crop Verification, Ultralytics YOLOv8 Object Detection & Automated Claim Payout API",
-    version="1.2.0"
-=======
     title="KrishiNetra AI / AgriSure Production Backend Engine",
     description="Multi-Source Fusion Crop Verification, 10m Sentinel-2 Infrared Satellite Imagery, Ultralytics YOLOv8 & Automated Claim Payout API",
     version="1.3.0"
->>>>>>> d791752 (api key)
 )
 
 # Enable CORS for React Frontend
@@ -234,13 +228,8 @@ def root():
     return {
         "engine": "KrishiNetra AI Production Backend Engine",
         "yoloStatus": "Active (YOLOv8)" if YOLO_AVAILABLE else "Fallback",
-<<<<<<< HEAD
         "database": db_provider,
-        "endpoints": ["/api/stats", "/api/farms", "/api/verify", "/api/assess", "/api/detect", "/api/decision"]
-=======
-        "database": "SQLite (agrisure.db)",
         "endpoints": ["/api/stats", "/api/farms", "/api/verify", "/api/assess", "/api/detect", "/api/decision", "/api/weather"]
->>>>>>> d791752 (api key)
     }
 
 @app.get("/api/stats")
