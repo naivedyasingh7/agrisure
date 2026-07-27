@@ -2,15 +2,20 @@ import React from 'react';
 import { PINTEREST_IMAGES } from '../assets/images';
 import { ArrowRight } from 'lucide-react';
 
-export default function Hero({ setActiveView }) {
+export default function Hero({ setActiveView, onCropClick }) {
   return (
     <section className="hero-section">
       <div className="g-row">
         <div className="g-col xxl-16 sm-22">
-          <h1 className="-title-1 animate-on-scroll" style={{ color: 'var(--color-stoneBrown800)', marginBottom: '30px' }}>
-            From Crop Image<br />
-            to Claim Decision<br />
-            in Seconds.
+          <h1 className="-title-1 animate-on-scroll" style={{ 
+            color: 'var(--color-stoneBrown800)', 
+            marginBottom: '24px',
+            fontSize: 'clamp(34px, 2.6vw + 16px, 58px)',
+            lineHeight: '1.14',
+            maxWidth: '1200px'
+          }}>
+            From Crop Image to<br />
+            Claim Decision in Seconds.
           </h1>
         </div>
       </div>
@@ -19,7 +24,12 @@ export default function Hero({ setActiveView }) {
         <div className="g-col xxl-24">
           <div className="hero-images-grid">
             {/* Left large drone agritech fields cover */}
-            <div className="hero-image-large image-reveal">
+            <div 
+              className="hero-image-large image-reveal"
+              onClick={() => onCropClick && onCropClick('maize')}
+              style={{ cursor: 'pointer', position: 'relative' }}
+              title="Click to view Maize (Corn) Crop Intelligence"
+            >
               <img 
                 src={PINTEREST_IMAGES.krishinetraHero} 
                 alt="KrishiNetra agricultural crop field layouts" 
@@ -32,9 +42,11 @@ export default function Hero({ setActiveView }) {
               <img 
                 src={PINTEREST_IMAGES.farmWaterlogged} 
                 alt="Waterlogged Farm Verification" 
-                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', zIndex: 1 }}
+                onClick={() => onCropClick && onCropClick('rice')}
+                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', zIndex: 1, cursor: 'pointer' }}
+                title="Click to view Basmati Rice Crop Intelligence"
               />
-              <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(10,15,20,0.85) 100%)', zIndex: 2 }} />
+              <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(10,15,20,0.85) 100%)', zIndex: 2, pointerEvents: 'none' }} />
               
               <div style={{ position: 'relative', zIndex: 3, padding: '30px', display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'flex-end' }}>
                 <h3 className="-title-3-medium animate-on-scroll" style={{ color: '#ffffff', marginBottom: '10px', fontSize: '26px', lineHeight: '1.2', textShadow: '0 2px 4px rgba(0,0,0,0.4)' }}>
