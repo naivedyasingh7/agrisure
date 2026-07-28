@@ -17,8 +17,8 @@ from PIL import Image, ImageEnhance, ImageOps
 import numpy as np
 
 # API Key configurations
-SENTINEL_HUB_API_KEY = "PLAKdf0aec42496540158b9ff7cc32b2d1fe"
-OPENWEATHERMAP_API_KEY = "3178321ad0cbf8695c415408442a4999"  
+SENTINEL_HUB_API_KEY = os.environ.get("SENTINEL_HUB_API_KEY", "PLAKdf0aec42496540158b9ff7cc32b2d1fe")
+OPENWEATHERMAP_API_KEY = os.environ.get("OPENWEATHERMAP_API_KEY", "3178321ad0cbf8695c415408442a4999")  
 
 try:
     from dotenv import load_dotenv

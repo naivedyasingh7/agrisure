@@ -24,6 +24,7 @@ export default function ClaimSimulator({ onApproveClaim }) {
   const [showCameraNotice, setShowCameraNotice] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [detectionResults, setDetectionResults] = useState(null);
+  const [liveAssessmentData, setLiveAssessmentData] = useState(null);
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -103,7 +104,7 @@ export default function ClaimSimulator({ onApproveClaim }) {
           clearInterval(interval);
           
           const targetScenario = (activeTab === 'upload' && detectionResults?.topPrediction) 
-            ? detectionResults.topPrediction.readableLabel 
+            ? (detectionResults.topPrediction.class || detectionResults.topPrediction.readableLabel) 
             : activeScenario;
 
           // Call API
@@ -124,22 +125,54 @@ export default function ClaimSimulator({ onApproveClaim }) {
             });
           })
           .then(res => res.json())
-          .then(() => {
+          .then((assessData) => {
+            setLiveAssessmentData(assessData);
             setPipelineStep(3);
           })
           .catch(err => {
             console.log("Using client-side fallback simulation:", err);
             setVerifyDetails({
-              antiSpoofCheck: "Passed",
-              gpsCoordinatesCheck: "Passed (Match Registry)",
-              imageHash: "sha256:7f4ea013bc...",
-              duplicateCheck: "No Duplicates Found (Unique)",
+              antiSpoofCheck: "Passed (Guided Compass Match)",
+              gpsCoordinatesCheck: "Passed (Coordinates 28.6139° N, 77.2090° E within plot)",
+              imageHash: "sha256:7f4ea013bc9a1f22...",
+              duplicateCheck: "No Duplicates Found (Unique Claim)",
               motionFramesExtracted: 24
             });
+
+            let fallbackAssessment;
+            if (activeTab === 'upload' && detectionResults?.topPrediction) {
+              const label = detectionResults.topPrediction.readableLabel;
+              const isHealthy = label.toLowerCase().includes('healthy');
+              const dmg = isHealthy ? 0 : 68;
+              const pay = isHealthy ? 0 : 15500;
+              const rsk = isHealthy ? 15 : 84;
+              fallbackAssessment = {
+                crop: label,
+                damagePercent: dmg,
+                suggestedPayout: pay,
+                riskScore: rsk,
+                weatherAnomaly: isHealthy ? "Normal Microclimate (No Extreme Weather Anomalies)" : "+68% Moisture & High Relative Humidity",
+                satelliteNdvi: isHealthy ? "0.82 (Optimal Canopy Health)" : "0.36 (Vegetation Anomaly Detected)",
+                yoloModel: "Fine-Tuned YOLOv8 Crop Disease Model",
+                aiExplanation: `Fine-Tuned YOLOv8 model diagnosed '${label}' with ${detectionResults.topPrediction.confidencePercent}% confidence.`
+              };
+            } else {
+              fallbackAssessment = {
+                crop: scenarios[activeScenario]?.crop || 'Crop',
+                damagePercent: scenarios[activeScenario]?.damagePercent || 65,
+                suggestedPayout: scenarios[activeScenario]?.suggestedPayout || 14500,
+                riskScore: scenarios[activeScenario]?.riskScore || 82,
+                weatherAnomaly: scenarios[activeScenario]?.weatherAnomaly || 'Excessive Moisture & Heat Stress',
+                satelliteNdvi: scenarios[activeScenario]?.satelliteNdvi || '0.38 (Vegetation Anomaly Detected)',
+                yoloModel: "YOLOv8 Engine",
+                aiExplanation: scenarios[activeScenario]?.aiExplanation || 'Crop disease assessment completed.'
+              };
+            }
+            setLiveAssessmentData(fallbackAssessment);
             setPipelineStep(2);
             setTimeout(() => {
               setPipelineStep(3);
-            }, 1000);
+            }, 800);
           });
           
           return 100;
@@ -154,6 +187,7 @@ export default function ClaimSimulator({ onApproveClaim }) {
     setPipelineStep(0);
     setClaimStatus('pending');
     setVerifyDetails(null);
+    setLiveAssessmentData(null);
   };
 
   const animateChecklist = (data) => {
@@ -187,6 +221,7 @@ export default function ClaimSimulator({ onApproveClaim }) {
     setChecklistTicks([]);
     setPipelineStep(0);
     setDetectionResults(null);
+    setLiveAssessmentData(null);
 
     const formData = new FormData();
     formData.append('file', file);
@@ -806,27 +841,22 @@ export default function ClaimSimulator({ onApproveClaim }) {
                 {/* Confidence Metrics Grid */}
                 {(() => {
                   const isUploadLive = activeTab === 'upload' && detectionResults?.topPrediction;
-                  const topPred = isUploadLive ? detectionResults.topPrediction : null;
+                  const assess = liveAssessmentData || (isUploadLive ? {
+                    crop: detectionResults.topPrediction.readableLabel,
+                    damagePercent: detectionResults.topPrediction.readableLabel.toLowerCase().includes('healthy') ? 0 : 68,
+                    suggestedPayout: detectionResults.topPrediction.readableLabel.toLowerCase().includes('healthy') ? 0 : 15500,
+                    riskScore: detectionResults.topPrediction.readableLabel.toLowerCase().includes('healthy') ? 15 : 84,
+                    weatherAnomaly: "+68% Relative Humidity & Heat Stress",
+                    satelliteNdvi: "0.36 (Foliage Degradation)",
+                    yoloModel: "Fine-Tuned YOLOv8 Crop Disease Model",
+                    aiExplanation: `Fine-Tuned YOLOv8 model evaluated crop photo and classified: "${detectionResults.topPrediction.readableLabel}" with ${detectionResults.topPrediction.confidencePercent}% confidence.`
+                  } : current);
                   
-                  const damageVal = isUploadLive 
-                    ? Math.min(95, Math.max(35, Math.round(topPred.confidencePercent * 0.82))) 
-                    : current.damagePercent;
-                  
-                  const riskVal = isUploadLive 
-                    ? Math.min(98, Math.max(40, Math.round(damageVal * 1.15))) 
-                    : current.riskScore;
-                  
-                  const confVal = isUploadLive 
-                    ? `${topPred.confidencePercent}%` 
-                    : '98%';
-                  
-                  const payoutVal = isUploadLive 
-                    ? Math.round(8000 + (damageVal * 165)) 
-                    : current.suggestedPayout;
-                  
-                  const explanationText = isUploadLive 
-                    ? `Fine-Tuned YOLOv8 Crop Disease Model (99.86% accuracy) evaluated the uploaded photo and classified: "${topPred.readableLabel}" with ${topPred.confidencePercent}% AI confidence. 5-point quality checklist verified.` 
-                    : current.aiExplanation;
+                  const damageVal = assess.damagePercent;
+                  const riskVal = assess.riskScore;
+                  const confVal = isUploadLive ? `${detectionResults.topPrediction.confidencePercent}%` : '98.6%';
+                  const payoutVal = assess.suggestedPayout;
+                  const explanationText = assess.aiExplanation;
 
                   return (
                     <>
@@ -870,11 +900,15 @@ export default function ClaimSimulator({ onApproveClaim }) {
                       <div style={{ fontSize: '13px', display: 'flex', flexDirection: 'column', gap: '10px', borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '20px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <span style={{ color: 'var(--color-stoneBrown600)' }}>🛰️ Model Loaded:</span>
-                          <strong>{isUploadLive ? "Fine-Tuned YOLOv8 Crop Model" : "YOLOv8 Vision"}</strong>
+                          <strong>{assess.yoloModel || (isUploadLive ? "Fine-Tuned YOLOv8 Crop Model" : "YOLOv8 Vision")}</strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ color: 'var(--color-stoneBrown600)' }}>📊 Satellite NDVI:</span>
+                          <strong>{assess.satelliteNdvi || current.satelliteNdvi}</strong>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <span style={{ color: 'var(--color-stoneBrown600)' }}>🌧️ Weather / Field Fusion:</span>
-                          <strong>{current.weatherAnomaly}</strong>
+                          <strong>{assess.weatherAnomaly || current.weatherAnomaly}</strong>
                         </div>
                       </div>
 
