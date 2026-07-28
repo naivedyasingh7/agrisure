@@ -12,7 +12,7 @@ export default function SettingsView({ currentUser, onUpdateUser }) {
     phone: currentUser?.phone || '+91 98765 43210',
     role: currentUser?.role || 'Chief Agritech Architect',
     farmerId: currentUser?.id || 'DCI-IND-1001',
-    organization: 'KrishiNetra AI Labs',
+    organization: 'Dhara AI Labs',
     address: 'Condeixa Sector, Block 4, Uttar Pradesh',
     
     // Farm Preferences
@@ -458,8 +458,8 @@ export default function SettingsView({ currentUser, onUpdateUser }) {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <div>
                         <span style={{ fontSize: '12px', fontWeight: '700', color: 'var(--color-stoneBrown800)' }}>🔐 CRYPTOGRAPHIC AUDIT SIGNATURES</span>
-                        <h4 style={{ fontSize: '15px', fontWeight: '600', color: 'var(--color-stoneBrown800)', marginTop: '2px' }}>SHA-256 Ledger Audit Signing</h4>
-                        <p style={{ fontSize: '12px', color: 'var(--color-stoneBrown600)', marginTop: '4px' }}>Every inspection photo upload & payout decision is stamped with a SHA-256 tamper-proof hash.</p>
+                        <h4 style={{ fontSize: '15px', fontWeight: '600', color: 'var(--color-stoneBrown800)', marginTop: '2px' }}>Audit Log & Certificate Verification</h4>
+                        <p style={{ fontSize: '12px', color: 'var(--color-stoneBrown600)', marginTop: '4px' }}>Every inspection photo upload & payout decision is recorded in an immutable audit trail.</p>
                       </div>
                       <span style={{ fontSize: '11px', fontWeight: 'bold', backgroundColor: 'rgba(4,45,43,0.1)', color: 'var(--color-forestGreen600)', padding: '4px 10px', borderRadius: '6px' }}>Enabled</span>
                     </div>

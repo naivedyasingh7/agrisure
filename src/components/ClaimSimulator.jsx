@@ -320,7 +320,7 @@ export default function ClaimSimulator({ onApproveClaim }) {
       {/* Header */}
       <div className="g-row" style={{ marginBottom: '40px' }}>
         <div className="g-col xxl-14 sm-22">
-          <span className="-body-small-medium" style={{ color: 'var(--color-red)' }}>KrishiNetra Live Engine</span>
+          <span className="-body-small-medium" style={{ color: 'var(--color-red)' }}>Dhara AI Live Engine</span>
           <h1 className="-title-2-medium" style={{ color: 'var(--color-stoneBrown800)', marginTop: '8px' }}>
             Interactive Claim Assessment
           </h1>

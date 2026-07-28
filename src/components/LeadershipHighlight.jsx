@@ -10,22 +10,8 @@ export default function LeadershipHighlight({ setActiveView }) {
         {/* Left column - Partner profile & statement */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <div style={{ width: '80px', height: '80px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--color-brightIvory300)', flexShrink: 0 }}>
-              <img 
-                src={PINTEREST_IMAGES.designerProfile} 
-                alt="Team Lead portrait" 
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400';
-                }}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} 
-              />
-            </div>
-            <div>
-              <h4 className="-title-8-medium" style={{ color: 'var(--color-stoneBrown800)' }}>Dr. Amit Verma</h4>
-              <p className="-body-smaller-medium" style={{ color: 'var(--color-stoneBrown500)' }}>Chief Agritech Architect</p>
-            </div>
+          <div className="category-tag -forest" style={{ alignSelf: 'flex-start', fontSize: '12px', padding: '6px 14px' }}>
+            Platform Philosophy
           </div>
 
           <blockquote className="animate-on-scroll" style={{ borderLeft: '4px solid var(--color-stoneBrown700)', paddingLeft: '24px' }}>

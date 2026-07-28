@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { User, LogIn, LogOut, Settings, ShieldCheck, CheckCircle2, Menu, X, Database, Camera, FileText, Users, Clock, Search, Save, Phone, Mail, Sun, Moon } from 'lucide-react';
+import DharaLogo from './DharaLogo';
 
 export default function Navbar({ activeView, setActiveView, claimsCount, onOpenClaims, darkMode, setDarkMode }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -142,8 +143,16 @@ export default function Navbar({ activeView, setActiveView, claimsCount, onOpenC
       )}
 
       <div className="navbar-container">
-        <a href="#home" onClick={() => handleNavClick('home')} className="logo-text" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          KrishiNetra AI
+        <a 
+          href="#home" 
+          onClick={(e) => {
+            e.preventDefault();
+            handleNavClick('home');
+          }} 
+          className="logo-text" 
+          style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
+        >
+          <DharaLogo variant="horizontal" theme={darkMode ? 'dark' : 'light'} size={150} showTagline={false} />
         </a>
 
         {/* Desktop Navigation */}

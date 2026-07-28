@@ -32,7 +32,7 @@ export default function Hero({ setActiveView, onCropClick }) {
             >
               <img 
                 src={PINTEREST_IMAGES.krishinetraHero} 
-                alt="KrishiNetra agricultural crop field layouts" 
+                alt="Dhara AI agricultural crop field layouts" 
                 style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
               />
             </div>

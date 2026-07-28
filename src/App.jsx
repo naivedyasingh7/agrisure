@@ -16,6 +16,11 @@ import SettingsView from './components/SettingsView';
 import TechStackView from './components/TechStackView';
 import SentinelExplorer from './components/SentinelExplorer';
 import CropDetailModal from './components/CropDetailModal';
+<<<<<<< Updated upstream
+=======
+import DharaBrandShowcase from './components/DharaBrandShowcase';
+import DharaLogo from './components/DharaLogo';
+>>>>>>> Stashed changes
 
 export default function App() {
   const [activeView, setActiveView] = useState('home');
@@ -31,32 +36,29 @@ export default function App() {
     localStorage.setItem('agrisure_theme', darkMode ? 'dark' : 'light');
     document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
-  
-  // Transition and Loader states
-  const [curtainState, setCurtainState] = useState('idle');
+
   const [loading, setLoading] = useState(true);
-  
+  const [curtainState, setCurtainState] = useState('idle');
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1400);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Global claims state for demonstration loop
   const [claimsCount, setClaimsCount] = useState(3);
 
-  // Fetch initial stats from Python backend API
-  useEffect(() => {
-    fetch('http://localhost:8000/api/stats')
-      .then(res => res.json())
-      .then(data => {
-        setClaimsCount(data.claimsPending);
-      })
-      .catch(err => console.log("Backend offline, using local simulation state:", err));
-  }, []);
-
-  // 1. Initialize Lenis Smooth Scroll on Mount
+  // Initialize Lenis Smooth Scroll
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // easeOutExpo
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
       smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
     });
-    window.lenis = lenis;
 
     function raf(time) {
       lenis.raf(time);
@@ -65,61 +67,48 @@ export default function App() {
 
     requestAnimationFrame(raf);
 
-    // Simulate loader complete after 1.8 seconds
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1800);
-
     return () => {
       lenis.destroy();
-      clearTimeout(timer);
     };
   }, []);
 
-  // 3. Scroll Intersection Observer for Image Reveals & Slide-ins
+  // Scroll Reveal Animations
   useEffect(() => {
-    if (loading) return;
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1,
+    };
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-            observer.unobserve(entry.target); // Reveal once
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    );
+    const handleIntersect = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    };
 
-    // Scan for revealable items
-    const elements = document.querySelectorAll('.image-reveal, .animate-on-scroll');
+    const observer = new IntersectionObserver(handleIntersect, observerOptions);
+    const elements = document.querySelectorAll('.animate-on-scroll');
     elements.forEach((el) => observer.observe(el));
 
-    return () => {
-      elements.forEach((el) => observer.unobserve(el));
-    };
-  }, [activeView, loading]);
+    return () => observer.disconnect();
+  }, [activeView]);
 
-  // 4. Animated Page Curtain Navigation
+  // Page Transition Handler
   const changeView = (newView) => {
     if (newView === activeView) return;
-    
-    setCurtainState('enter');
-    
+
+    setCurtainState('covering');
     setTimeout(() => {
       setActiveView(newView);
       window.scrollTo(0, 0);
-      setCurtainState('exit');
-    }, 450);
-
-    setTimeout(() => {
-      setCurtainState('idle');
-    }, 900);
-  };
-
-  const handleApproveClaim = () => {
-    setClaimsCount(prev => Math.max(0, prev - 1));
+      setCurtainState('uncovering');
+      setTimeout(() => {
+        setCurtainState('idle');
+      }, 500);
+    }, 400);
   };
 
   const handleResetClaims = () => {
@@ -133,13 +122,17 @@ export default function App() {
   return (
     <div className="app-container" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>
       
-      {/* Brand Intro Loader */}
-      <div className={`intro-loader ${!loading ? 'fade-out' : ''}`}>
-        <h1 className="intro-logo">KrishiNetra AI</h1>
-        <div className="intro-progress-container">
-          <div className="intro-progress-bar"></div>
+      {/* Simple Dhara AI Logo Splash Screen */}
+      {loading && (
+        <div className={`intro-loader ${!loading ? 'fade-out' : ''}`}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+            <DharaLogo variant="vertical" theme="dark" size={200} showTagline={true} />
+          </div>
+          <div className="intro-progress-container" style={{ marginTop: '28px' }}>
+            <div className="intro-progress-bar"></div>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Page Wipe Curtain */}
       <div className={`transition-curtain ${curtainState}`}></div>
@@ -162,42 +155,62 @@ export default function App() {
             
             <CollectionsCTA setActiveView={changeView} onCropClick={handleOpenCropModal} />
             
-            <CompanyHighlight setActiveView={changeView} onCropClick={handleOpenCropModal} />
-            
-            <LeadershipHighlight setActiveView={changeView} />
-            
-            <WorkflowOverview />
+            <CompanyHighlight />
+
+            <LeadershipHighlight />
+
+            <WorkflowOverview setActiveView={changeView} />
           </>
         )}
 
+<<<<<<< Updated upstream
         {activeView === 'sentinel' && <SentinelExplorer />}
 
         {activeView === 'registry' && <DciRegistry onCropClick={handleOpenCropModal} />}
 
         {activeView === 'demo' && (
           <ClaimSimulator onApproveClaim={handleApproveClaim} onCropClick={handleOpenCropModal} />
+=======
+        {activeView === 'dci-registry' && (
+          <DciRegistry setActiveView={changeView} />
+>>>>>>> Stashed changes
         )}
 
-        {(activeView === 'audit' || activeView === 'tech') && <AuditDashboard onCropClick={handleOpenCropModal} />}
+        {activeView === 'claim-simulator' && (
+          <ClaimSimulator setActiveView={changeView} setClaimsCount={setClaimsCount} />
+        )}
 
-        {activeView === 'settings' && <SettingsView />}
+        {activeView === 'audit' && (
+          <AuditDashboard setActiveView={changeView} />
+        )}
+
+        {activeView === 'sentinel' && (
+          <SentinelExplorer setActiveView={changeView} />
+        )}
+
+        {activeView === 'settings' && (
+          <SettingsView setActiveView={changeView} darkMode={darkMode} setDarkMode={setDarkMode} />
+        )}
+
+        {activeView === 'tech-stack' && (
+          <TechStackView setActiveView={changeView} />
+        )}
+
+        {activeView === 'dhara-brand' && (
+          <DharaBrandShowcase setActiveView={changeView} />
+        )}
       </main>
 
-      {/* Footer element */}
+      {/* Footer component */}
       <Footer setActiveView={changeView} />
 
-      {/* Crop Intelligence Modal */}
+      {/* Crop Inspection Modal */}
       {selectedCropModal && (
         <CropDetailModal 
-          crop={selectedCropModal} 
+          cropKey={selectedCropModal} 
           onClose={() => setSelectedCropModal(null)} 
-          onActionClick={(cropId) => {
-            setSelectedCropModal(null);
-            changeView(cropId === 'rice' ? 'registry' : cropId === 'cotton' ? 'demo' : 'tech');
-          }} 
         />
       )}
-
     </div>
   );
 }

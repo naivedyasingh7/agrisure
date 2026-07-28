@@ -1,0 +1,11 @@
+<svg width="240" height="60" viewBox="0 0 240 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- D+A Monogram Mark -->
+  <path d="M 12 9 H 26 C 35 9 41 16 41 25 C 41 34 35 41 26 41 H 12 Z" fill="#F8FAF7" />
+  <path d="M 18 15 L 26 15 C 31 15 35 19 35 25 C 35 31 31 35 26 35 L 18 35 Z" fill="#08120D" />
+  <path d="M 26 16 L 32 34 H 27 L 25.5 29 H 21.5 L 20 34 H 15 Z M 23.5 22 L 22.5 25.5 H 24.5 Z" fill="#F8FAF7" />
+  <circle cx="23.5" cy="20" r="1.8" fill="#69C36D" />
+
+  <!-- Typography -->
+  <text x="52" y="34" font-family="'Sora', sans-serif" font-weight="800" font-size="26" fill="#F8FAF7" letter-spacing="-0.5">Dhara</text>
+  <text x="134" y="34" font-family="'Sora', sans-serif" font-weight="600" font-size="22" fill="#69C36D" letter-spacing="0.5">AI</text>
+</svg>

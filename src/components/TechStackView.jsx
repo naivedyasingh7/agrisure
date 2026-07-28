@@ -38,7 +38,7 @@ export default function TechStackView() {
         <div className="g-col xxl-14 sm-22">
           <span className="-body-small-medium" style={{ color: 'var(--color-forestGreen600)' }}>System Architecture</span>
           <h1 className="-title-2-medium" style={{ color: 'var(--color-stoneBrown800)', marginTop: '8px' }}>
-            KrishiNetra AI Tech Stack
+            Dhara AI Tech Stack
           </h1>
           <p className="-body-medium" style={{ color: 'var(--color-stoneBrown600)', marginTop: '8px' }}>
             We merge on-device client intelligence with multi-layer cloud vision and satellite telemetry.

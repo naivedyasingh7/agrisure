@@ -93,7 +93,7 @@ export default function ProductCustomizationModal({ isOpen, onClose, product, on
 
           <div style={{ marginTop: '16px', backgroundColor: 'var(--color-brightIvory50)', padding: '16px', borderRadius: '8px' }}>
             <p className="-body-medium" style={{ fontSize: '13px', color: 'var(--color-stoneBrown600)', lineHeight: '1.6' }}>
-              Floema solutions are build out of <strong>100% recycled RePlastic materials</strong>, delivering long-lasting weather-proof outdoor installations with zero structural maintenance required.
+              AgriSure hardware sensors are built with industrial-grade weather-proof materials, delivering zero-maintenance outdoor monitoring across all field seasons.
             </p>
           </div>
         </div>

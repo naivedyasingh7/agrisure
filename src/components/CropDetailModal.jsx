@@ -37,7 +37,7 @@ export const CROP_DATASET = {
         card1: { icon: Activity, iconColor: '#BACFA3', title: 'Satellite Telemetry', text: 'Sentinel-2 Band 8 (NIR) & Band 4', sub: '🛰️ 10m Spatial Resolution' },
         card2: { icon: ShieldCheck, iconColor: '#81C784', title: 'AI Verification', value: '98.4%', sub: '⚡ YOLOv8 Submergence Score' },
         regionsTitle: 'Telemetry Risk & Anti-Fraud Anchoring',
-        regions: ['🌊 Submergence Flood (High)', '🐛 Stem Borer (Moderate)', '🛰️ Satellite NDVI Track', '🔒 SHA-256 Hash']
+        regions: ['🌊 Submergence Flood (High)', '🐛 Stem Borer (Moderate)', '🛰️ Satellite NDVI Track', '🔒 Verification Hash']
       }
     }
   },
@@ -76,7 +76,7 @@ export const CROP_DATASET = {
         card1: { icon: Activity, iconColor: '#BACFA3', title: 'Vision Analytics', text: 'PyTorch YOLOv8 Pest Model', sub: '📱 3D Gyro Compass Check' },
         card2: { icon: ShieldCheck, iconColor: '#81C784', title: 'AI Verification', value: '94.2%', sub: '⚡ Pest & Damage Score' },
         regionsTitle: 'Telemetry Risk & Anti-Fraud Anchoring',
-        regions: ['🐛 Spotted Bollworm (High)', '🌧️ Unseasonal Rain (High)', '📱 3D Camera Check', '🔒 PostgreSQL Ledger Hash']
+        regions: ['🐛 Spotted Bollworm (High)', '🌧️ Unseasonal Rain (High)', '📱 3D Camera Check', '🔒 Verification Hash']
       }
     }
   },
@@ -115,7 +115,7 @@ export const CROP_DATASET = {
         card1: { icon: Activity, iconColor: '#BACFA3', title: 'Weather Telemetry', text: 'IMD Station Rain Gauge Grid', sub: '🌧️ Real-Time Rain Matching' },
         card2: { icon: ShieldCheck, iconColor: '#81C784', title: 'AI Verification', value: '96.8%', sub: '⚡ Drought & Canopy Score' },
         regionsTitle: 'Telemetry Risk & Anti-Fraud Anchoring',
-        regions: ['☀️ Heatwave Stress (High)', '🌵 Rain Deficit Anomaly', '🛰️ Sentinel NDVI Track', '🔒 SHA-256 Claim Hash']
+        regions: ['☀️ Heatwave Stress (High)', '🌵 Rain Deficit Anomaly', '🛰️ Sentinel NDVI Track', '🔒 Verification Hash']
       }
     }
   },
@@ -154,7 +154,7 @@ export const CROP_DATASET = {
         card1: { icon: Activity, iconColor: '#BACFA3', title: 'Motion Check', text: '3D Gyro Canopy Density (≥70%)', sub: '📱 Anti-Spoofing Protocol' },
         card2: { icon: ShieldCheck, iconColor: '#81C784', title: 'AI Verification', value: '97.1%', sub: '⚡ Motion Field Rating' },
         regionsTitle: 'Telemetry Risk & Anti-Fraud Anchoring',
-        regions: ['🐛 Fall Armyworm (High)', '🌊 Water Stagnation Risk', '📱 3D Gyro Verification', '🔒 SHA-256 Ledger Hash']
+        regions: ['🐛 Fall Armyworm (High)', '🌊 Water Stagnation Risk', '📱 3D Gyro Verification', '🔒 Verification Hash']
       }
     }
   },
@@ -193,7 +193,7 @@ export const CROP_DATASET = {
         card1: { icon: Activity, iconColor: '#BACFA3', title: 'Multi-Season DCI', text: '12-Month Biomass Track', sub: '🛰️ Long-Term Satellite Sync' },
         card2: { icon: ShieldCheck, iconColor: '#81C784', title: 'AI Verification', value: '95.6%', sub: '⚡ Multi-Year DCI Rating' },
         regionsTitle: 'Telemetry Risk & Anti-Fraud Anchoring',
-        regions: ['🍂 Red Rot Disease (High)', '❄️ Frost Damage (Moderate)', '🛰️ Multi-Year DCI Timeline', '🔒 SHA-256 Hash Anchoring']
+        regions: ['🍂 Red Rot Disease (High)', '❄️ Frost Damage (Moderate)', '🛰️ Multi-Year DCI Timeline', '🔒 Verification Hash']
       }
     }
   }

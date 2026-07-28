@@ -38,7 +38,7 @@ export default function AuditDashboard({ onCropClick }) {
 
   const handleDownloadReport = (row) => {
     const reportContent = `====================================================
-KRISHINETRA AI - CROP FIELD INSPECTION REPORT
+DHARA AI - CROP FIELD INSPECTION REPORT
 ====================================================
 Report ID: RPT-${row.id || '101'}-${Math.floor(1000 + Math.random() * 9000)}
 Generated Date: ${new Date().toLocaleString()}
@@ -84,7 +84,7 @@ AUDIT DIGEST & PERSISTENCE:
 
     const certContent = `====================================================
 OFFICIAL VERIFIABLE CROP CLAIM CERTIFICATE
-ISSUED BY KRISHINETRA AI ENTERPRISE ENGINE
+ISSUED BY DHARA AI ENTERPRISE ENGINE
 ====================================================
 Certificate ID: CERT-${row.id || '101'}-${Math.floor(1000 + Math.random() * 9000)}
 Issue Date: ${new Date().toLocaleDateString()}
@@ -168,13 +168,13 @@ HAS BEEN AUTOMATICALLY VERIFIED AND SETTLED:
       <div className="g-row" style={{ marginBottom: '32px' }}>
         <div className="g-col xxl-18 sm-22">
           <span className="-body-small-medium" style={{ color: 'var(--color-stoneBrown600)', letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: '12px', fontWeight: '700' }}>
-            KRISHINETRA RECORD AUDIT & ARCHIVE
+            DHARA RECORD AUDIT & ARCHIVE
           </span>
           <h1 className="-title-2-medium" style={{ color: 'var(--color-stoneBrown800)', marginTop: '6px', fontSize: 'clamp(28px, 2vw + 16px, 42px)' }}>
             History & Records
           </h1>
           <p className="-body-medium" style={{ color: 'var(--color-stoneBrown600)', marginTop: '6px', fontSize: '15px' }}>
-            Clean ledger audit history of past crop inspection records, SHA-256 verification hashes, and official certificate archives.
+            Clean audit history of past crop inspection records, verification hashes, and official certificate archives.
           </p>
         </div>
       </div>
@@ -305,7 +305,7 @@ HAS BEEN AUTOMATICALLY VERIFIED AND SETTLED:
                   <th style={{ padding: '16px 20px', fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-stoneBrown600)' }}>Audit Date</th>
                   <th style={{ padding: '16px 20px', fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-stoneBrown600)' }}>Status</th>
                   <th style={{ padding: '16px 20px', fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-stoneBrown600)' }}>Payout</th>
-                  <th style={{ padding: '16px 20px', fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-stoneBrown600)' }}>SHA-256 Hash</th>
+                  <th style={{ padding: '16px 20px', fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-stoneBrown600)' }}>Verification Hash</th>
                   <th style={{ padding: '16px 20px', fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-stoneBrown600)', textAlign: 'right' }}>Actions</th>
                 </tr>
               </thead>

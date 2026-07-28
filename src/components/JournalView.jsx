@@ -15,7 +15,7 @@ export default function JournalView() {
       title: 'National Agritech Pilot Project for Paddy Farmers',
       summary: 'Implementing automated crop identity registration across 230 agricultural blocks. We verified crop stress profiles with 98% anti-spoof accuracy.',
       date: 'April 14, 2025',
-      author: 'KrishiNetra AI Lab',
+      author: 'Dhara AI Lab',
       img: PINTEREST_IMAGES.heroCover
     }
   ];

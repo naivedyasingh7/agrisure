@@ -24,7 +24,7 @@ export default function CompanyHighlight({ setActiveView, onCropClick }) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <h4 className="-title-8-medium" style={{ color: 'var(--color-stoneBrown800)', fontSize: '14px', letterSpacing: '0.05em' }}>
-              KRISHINETRA AI · EST. 2026
+              DHARA AI · EST. 2026
             </h4>
             <div style={{ flexGrow: 1, height: '1px', backgroundColor: 'rgba(36, 31, 33, 0.1)' }}></div>
           </div>
@@ -47,7 +47,7 @@ export default function CompanyHighlight({ setActiveView, onCropClick }) {
           </div>
 
           <h2 className="animate-on-scroll" style={{ color: 'var(--color-stoneBrown800)', fontFamily: 'var(--font-serif)', fontSize: 'clamp(18px, 1.1vw + 9px, 23px)', fontWeight: '400', lineHeight: '1.45', letterSpacing: '-0.01em' }}>
-            Instead of sending field investigators to review claims months after a disaster, KrishiNetra AI evaluates crop health instantly. By layering satellite data, precipitation timelines, and guided farmer videos, we reduce claim settlement times from 90 days to seconds.
+            Instead of sending field investigators to review claims months after a disaster, Dhara AI evaluates crop health instantly. By layering satellite data, precipitation timelines, and guided farmer videos, we reduce claim settlement times from 90 days to seconds.
           </h2>
         </div>
 

@@ -18,6 +18,9 @@ import {
   CheckCircle2
 } from 'lucide-react';
 
+const SENTINEL_API_KEY = import.meta.env.VITE_SENTINEL_API_KEY || '';
+const BACKEND_BASE = 'http://localhost:8000';
+
 export default function SentinelExplorer() {
   // Farm presets
   const presets = [
@@ -81,7 +84,8 @@ export default function SentinelExplorer() {
   // Fetch Sentinel Hub imagery data from Python backend
   const fetchSatelliteImagery = (targetLat, targetLon, currentMode) => {
     setLoading(true);
-    const url = `http://localhost:8000/api/sentinel/imagery?lat=${targetLat}&lon=${targetLon}&mode=${currentMode}`;
+    // URL is always pointed at the local backend — not user-controlled
+    const url = `${BACKEND_BASE}/api/sentinel/imagery?lat=${encodeURIComponent(targetLat)}&lon=${encodeURIComponent(targetLon)}&mode=${encodeURIComponent(currentMode)}`;
 
     fetch(url)
       .then((res) => {
@@ -115,7 +119,7 @@ export default function SentinelExplorer() {
           sensor: 'Sentinel-2 L2A / Planet Constellation (Sentinel Hub)',
           meanNdvi: mockNdvi,
           healthDiagnosis: mockHealth,
-          tileUrl: `http://localhost:8000/api/sentinel/tile?lat=${targetLat}&lon=${targetLon}&mode=${currentMode}`,
+          tileUrl: `${BACKEND_BASE}/api/sentinel/tile?lat=${targetLat}&lon=${targetLon}&mode=${currentMode}`,
           imageBase64: null
         });
         setLoading(false);
@@ -163,10 +167,10 @@ export default function SentinelExplorer() {
         <div className="g-col xxl-16 sm-22">
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
             <span className="category-tag -nature" style={{ backgroundColor: 'rgba(16, 185, 129, 0.12)', color: '#10b981', fontWeight: 'bold' }}>
-              <Globe size={12} style={{ marginRight: '4px' }} /> Sentinel Hub API Key Active
+              <Globe size={12} style={{ marginRight: '4px' }} /> Sentinel Hub API Active
             </span>
             <span style={{ fontSize: '12px', fontFamily: 'monospace', color: 'var(--color-stoneBrown600)', backgroundColor: 'rgba(0,0,0,0.05)', padding: '3px 8px', borderRadius: '4px' }}>
-              PLAKdf0aec42496540158b9ff7cc32b2d1fe
+              {SENTINEL_API_KEY ? `${SENTINEL_API_KEY.slice(0, 8)}...` : 'Key not configured'}
             </span>
           </div>
 

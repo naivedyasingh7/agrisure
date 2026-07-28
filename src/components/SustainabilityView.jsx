@@ -4,16 +4,16 @@ import { PINTEREST_IMAGES } from '../assets/images';
 export default function SustainabilityView() {
   const points = [
     {
-      title: '100% Recyclable RePlastic',
-      description: 'We recycle consumer plastics to manufacture a dense, weather-proof wood-alternative. It is completely inert, chemically stable, and emits no microplastics back into soil.'
+      title: 'Solar-Powered Field Nodes',
+      description: 'All field micro-weather stations and soil sensors operate on integrated solar panels with ultra-low power telemetry, requiring zero grid energy.'
     },
     {
-      title: 'Zero Maintenance, Zero Varnish',
-      description: 'Unlike traditional outdoor timber, RePlastic requires no paint, sealants, or annual varnish coatings. It resists UV fading, salt corrosion, humidity, and boring insects naturally.'
+      title: 'Low-Carbon Remote Sensing',
+      description: 'By leveraging Sentinel-2 satellite infrared telemetry, field adjusters reduce unnecessary physical vehicle trips, lowering inspection carbon emissions.'
     },
     {
-      title: 'FSC-Certified Woods Only',
-      description: 'When wood is required, we source exclusively from sustainable European forest operations that hold FSC certificates, ensuring reforestation and localized bio-diversity conservation.'
+      title: 'Eco-Friendly Sensor Housings',
+      description: 'Field sensor casings placed directly in farm soil are constructed with non-toxic, eco-friendly materials that leave zero microplastics in farm soil.'
     }
   ];
 

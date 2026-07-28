@@ -21,7 +21,7 @@ export default function AboutView() {
           <div className="image-reveal-container" style={{ height: '420px', borderRadius: '16px', overflow: 'hidden' }}>
             <img 
               src={PINTEREST_IMAGES.heroCover} 
-              alt="KrishiNetra AI agritech lab" 
+              alt="Dhara AI agritech lab" 
               onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = 'https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?auto=format&fit=crop&q=80&w=1000';
@@ -41,7 +41,7 @@ export default function AboutView() {
             Ecosystem Verification is our Core Principle
           </h3>
           <p className="-body-medium" style={{ color: 'var(--color-stoneBrown700)', lineHeight: '1.7' }}>
-            KrishiNetra AI rose from a mission to turn complex crop insurance audits into instantaneous, tamper-proof assessments. Over the last decade, we have pioneered the use of Digital Crop Identities (DCI) fusing satellite NDVI indexes with smartphone compass vectors and weather telemetry.
+            Dhara AI rose from a mission to turn complex crop insurance audits into instantaneous, tamper-proof assessments. Over the last decade, we have pioneered the use of Digital Crop Identities (DCI) fusing satellite NDVI indexes with smartphone compass vectors and weather telemetry.
           </p>
           <p className="-body-medium" style={{ color: 'var(--color-stoneBrown700)', lineHeight: '1.7' }}>
             From high-value cotton fields needing pest loss analysis to flood-affected Basmati rice fields requiring cloudburst confirmation, our AI models evaluate claims within seconds.
@@ -60,23 +60,11 @@ export default function AboutView() {
             gap: '20px'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <img 
-              src={PINTEREST_IMAGES.designerProfile} 
-              alt="Dr. Amit Verma" 
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400';
-              }}
-              style={{ width: '60px', height: '60px', borderRadius: '50%', objectFit: 'cover', objectPosition: 'center', flexShrink: 0 }} 
-            />
-            <div>
-              <h4 className="-title-8-medium" style={{ fontSize: '16px' }}>Dr. Amit Verma</h4>
-              <p className="-body-smaller-medium">Chief Agritech Architect</p>
-            </div>
+          <div className="category-tag -forest" style={{ alignSelf: 'flex-start', fontSize: '12px' }}>
+            Mission Statement
           </div>
-          <p className="-body-medium" style={{ fontStyle: 'italic', color: 'var(--color-stoneBrown800)', fontSize: '16px', lineHeight: '1.5' }}>
-            "True circular economy means creating items that will endure for centuries. We refuse to use single-use plastics or untreated wood that decays rapidly. Sustainable space planning is made for life."
+          <p className="-body-medium" style={{ fontStyle: 'italic', color: 'var(--color-stoneBrown800)', fontSize: '18px', lineHeight: '1.6' }}>
+            "AgriSure removes manual adjuster bias by combining satellite telemetry, multi-spectral NDVI tracking, and AI vision into an automated crop assessment platform built for trust."
           </p>
         </div>
 
