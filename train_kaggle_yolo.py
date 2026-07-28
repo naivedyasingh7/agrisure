@@ -19,10 +19,11 @@ def main():
         model = YOLO("yolov8n-cls.pt")
         results = model.train(
             data=DATASET_PATH,
-            epochs=50,        # Set to 50 Epochs as requested
-            imgsz=224,        # Classification resolution
-            batch=32,         # Batch size
-            device="cpu",     # Use CPU (or 0 for GPU if available)
+            epochs=50,        # 50 Epochs training
+            imgsz=640,        # 640x640 input resolution for high-detail detection
+            batch=16,         # Batch size optimized for training stability
+            augment=True,     # Enable data augmentation (flip, scale, color jitter) to prevent overfitting
+            device="cpu",     # Use CPU (or 0/cuda for GPU)
             name="agrisure_crop_disease_50epochs"
         )
     
@@ -31,3 +32,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

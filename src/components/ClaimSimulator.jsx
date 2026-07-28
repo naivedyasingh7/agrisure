@@ -102,11 +102,15 @@ export default function ClaimSimulator({ onApproveClaim }) {
         if (prev >= 100) {
           clearInterval(interval);
           
+          const targetScenario = (activeTab === 'upload' && detectionResults?.topPrediction) 
+            ? detectionResults.topPrediction.readableLabel 
+            : activeScenario;
+
           // Call API
           fetch('http://localhost:8000/api/verify', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ videoName: `${activeScenario}_proof.mp4` })
+            body: JSON.stringify({ videoName: `${targetScenario}_proof.mp4` })
           })
           .then(res => res.json())
           .then(data => {
@@ -116,7 +120,7 @@ export default function ClaimSimulator({ onApproveClaim }) {
             return fetch('http://localhost:8000/api/assess', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ scenario: activeScenario })
+              body: JSON.stringify({ scenario: targetScenario })
             });
           })
           .then(res => res.json())
@@ -181,6 +185,8 @@ export default function ClaimSimulator({ onApproveClaim }) {
     setIsVerifyingImage(true);
     setQualityChecklist(null);
     setChecklistTicks([]);
+    setPipelineStep(0);
+    setDetectionResults(null);
 
     const formData = new FormData();
     formData.append('file', file);
@@ -192,7 +198,9 @@ export default function ClaimSimulator({ onApproveClaim }) {
     .then(res => res.json())
     .then(data => {
       setQualityChecklist(data);
-      setDetectionResults(data);
+      if (data.allPassed) {
+        setDetectionResults(data);
+      }
       animateChecklist(data);
     })
     .catch(err => {
