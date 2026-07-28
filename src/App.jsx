@@ -16,11 +16,8 @@ import SettingsView from './components/SettingsView';
 import TechStackView from './components/TechStackView';
 import SentinelExplorer from './components/SentinelExplorer';
 import CropDetailModal from './components/CropDetailModal';
-<<<<<<< Updated upstream
-=======
 import DharaBrandShowcase from './components/DharaBrandShowcase';
 import DharaLogo from './components/DharaLogo';
->>>>>>> Stashed changes
 
 export default function App() {
   const [activeView, setActiveView] = useState('home');
@@ -163,18 +160,7 @@ export default function App() {
           </>
         )}
 
-<<<<<<< Updated upstream
-        {activeView === 'sentinel' && <SentinelExplorer />}
-
         {activeView === 'registry' && <DciRegistry onCropClick={handleOpenCropModal} />}
-
-        {activeView === 'demo' && (
-          <ClaimSimulator onApproveClaim={handleApproveClaim} onCropClick={handleOpenCropModal} />
-=======
-        {activeView === 'dci-registry' && (
-          <DciRegistry setActiveView={changeView} />
->>>>>>> Stashed changes
-        )}
 
         {activeView === 'claim-simulator' && (
           <ClaimSimulator setActiveView={changeView} setClaimsCount={setClaimsCount} />
