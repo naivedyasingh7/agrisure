@@ -13,12 +13,9 @@ import DciRegistry from './components/DciRegistry';
 import ClaimSimulator from './components/ClaimSimulator';
 import AuditDashboard from './components/AuditDashboard';
 import SettingsView from './components/SettingsView';
-<<<<<<< HEAD
 import TechStackView from './components/TechStackView';
 import SentinelExplorer from './components/SentinelExplorer';
-=======
 import CropDetailModal from './components/CropDetailModal';
->>>>>>> a1d07f8e5aec9375bfd221f4d49b65dac1109470
 
 export default function App() {
   const [activeView, setActiveView] = useState('home');
@@ -173,13 +170,9 @@ export default function App() {
           </>
         )}
 
-<<<<<<< HEAD
         {activeView === 'sentinel' && <SentinelExplorer />}
 
-        {activeView === 'registry' && <DciRegistry />}
-=======
         {activeView === 'registry' && <DciRegistry onCropClick={handleOpenCropModal} />}
->>>>>>> a1d07f8e5aec9375bfd221f4d49b65dac1109470
 
         {activeView === 'demo' && (
           <ClaimSimulator onApproveClaim={handleApproveClaim} onCropClick={handleOpenCropModal} />

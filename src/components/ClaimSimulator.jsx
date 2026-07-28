@@ -828,23 +828,6 @@ export default function ClaimSimulator({ onApproveClaim }) {
                     ? `Fine-Tuned YOLOv8 Crop Disease Model (99.86% accuracy) evaluated the uploaded photo and classified: "${topPred.readableLabel}" with ${topPred.confidencePercent}% AI confidence. 5-point quality checklist verified.` 
                     : current.aiExplanation;
 
-<<<<<<< HEAD
-                {/* Satellite Weather details */}
-                <div style={{ fontSize: '13px', display: 'flex', flexDirection: 'column', gap: '10px', borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '20px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ color: 'var(--color-stoneBrown600)' }}>🛰️ Sentinel Hub Satellite:</span>
-                    <strong style={{ color: '#10b981' }}>10m Sentinel-2 Infrared (PLAKdf0a...)</strong>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ color: 'var(--color-stoneBrown600)' }}>📊 Satellite NDVI:</span>
-                    <strong>{current.satelliteNdvi}</strong>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ color: 'var(--color-stoneBrown600)' }}>🌧️ Local Weather:</span>
-                    <strong>{current.weatherAnomaly}</strong>
-                  </div>
-                </div>
-=======
                   return (
                     <>
                       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
@@ -861,7 +844,6 @@ export default function ClaimSimulator({ onApproveClaim }) {
                           <h3 className="-title-2-medium" style={{ fontSize: '24px', color: 'var(--color-forestGreen600)' }}>{confVal}</h3>
                         </div>
                       </div>
->>>>>>> a1d07f8e5aec9375bfd221f4d49b65dac1109470
 
                       {/* Top 5 AI Candidates if Uploaded */}
                       {isUploadLive && detectionResults?.detections?.length > 0 && (
